@@ -10,31 +10,76 @@
         android:id="@+id/songs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginLeft="148dp"
+        android:layout_marginRight="148dp"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="150dp"
         android:text="Songs"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="116dp" />
+        app:layout_constraintBottom_toTopOf="@+id/artists"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/artists"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginLeft="148dp"
+        android:layout_marginRight="148dp"
+        android:layout_marginStart="148dp"
         android:text="Artists"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="197dp" />
+        app:layout_constraintBottom_toTopOf="@+id/albums"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/albums"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginLeft="148dp"
+        android:layout_marginRight="148dp"
+        android:layout_marginStart="148dp"
         android:text="Albums"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="274dp" />
+        app:layout_constraintBottom_toTopOf="@+id/playlists"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/playlists"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:layout_marginEnd="144dp"
+        android:layout_marginLeft="144dp"
+        android:layout_marginRight="144dp"
+        android:layout_marginStart="144dp"
         android:text="Playlists"
-        tools:layout_editor_absoluteX="144dp"
-        tools:layout_editor_absoluteY="352dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/library"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="51dp"
+        android:layout_marginEnd="137dp"
+        android:layout_marginLeft="137dp"
+        android:layout_marginRight="137dp"
+        android:layout_marginStart="137dp"
+        android:layout_marginTop="44dp"
+        android:text="Library"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/songs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Library" />
 </android.support.constraint.ConstraintLayout>
