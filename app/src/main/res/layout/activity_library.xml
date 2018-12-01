@@ -6,4 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".Library">
 
+    <Button
+        android:id="@+id/songs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Songs"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="116dp" />
+
+    <Button
+        android:id="@+id/artists"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Artists"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="197dp" />
+
+    <Button
+        android:id="@+id/albums"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Albums"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="274dp" />
+
+    <Button
+        android:id="@+id/playlists"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Playlists"
+        tools:layout_editor_absoluteX="144dp"
+        tools:layout_editor_absoluteY="352dp" />
 </android.support.constraint.ConstraintLayout>
