@@ -97,13 +97,11 @@ public class MainActivity extends AppCompatActivity {
         //retrieve song info
 
         ContentResolver musicResolver = getContentResolver();
-
-
-
         Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
+        String selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0";
+        String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
-
+        Cursor musicCursor = musicResolver.query(musicUri, null, selection, null, sortOrder);
         if(musicCursor!=null && musicCursor.moveToFirst()){
             //get columns
             int titleColumn = musicCursor.getColumnIndex
