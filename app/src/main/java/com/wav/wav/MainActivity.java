@@ -1,5 +1,6 @@
 package com.wav.wav;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     TextView remainingTimeLabel;
     MediaPlayer mp;
     int totalTime;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
+
+        Button btn = (Button)findViewById(R.id.librarybtn);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, Library.class));
+            }
+        });
 
     }
 
