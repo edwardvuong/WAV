@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
 
+        // Library Button
         Button btn = (Button)findViewById(R.id.librarybtn);
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, Library.class));
             }
         });
+
+
 
     }
 
@@ -146,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         if (!mp.isPlaying()) {
             // Stopping
             mp.start();
-            playBtn.setBackgroundResource(R.drawable.stop);
+            playBtn.setBackgroundResource(R.drawable.pause);
 
         } else {
             // Playing
