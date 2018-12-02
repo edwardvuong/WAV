@@ -51,6 +51,7 @@ public class SongList extends AppCompatActivity {
     public void songPicked(View view){
         musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
         musicSrv.playSong();
+        startActivity(new Intent(SongList.this, MainActivity.class));
     }
 
 //    @Override

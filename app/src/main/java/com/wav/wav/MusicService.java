@@ -66,16 +66,16 @@ public class MusicService extends Service implements
     }
 
     public void playSong(){
-        // Now Playing View
-        Button np = (Button)findViewById(R.id.nowPlayingBtn);
-
-        np.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MusicService.this, MainActivity.class));
-                //finish();
-            }
-        });
+//        // Now Playing View
+//        Button np = (Button)findViewById(R.id.nowPlayingBtn);
+//
+//        np.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(MusicService.this, MainActivity.class));
+//                //finish();
+//            }
+//        });
         //play a song
         player.reset();
         //get song
