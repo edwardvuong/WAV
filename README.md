@@ -1,2 +1,2 @@
 # WAV
-CECS343 Semester Project: Android Music Player
+Gesture Based Android Music Player

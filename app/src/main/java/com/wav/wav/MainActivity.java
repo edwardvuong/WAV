@@ -1,5 +1,6 @@
 package com.wav.wav;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+
 public class MainActivity extends AppCompatActivity {
 
     Button playBtn;
@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     TextView remainingTimeLabel;
     MediaPlayer mp;
     int totalTime;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +103,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
 
+        // Library Button
+        Button btn = (Button)findViewById(R.id.librarybtn);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, Library.class));
+            }
+        });
+
+
+
     }
 
     private Handler handler = new Handler() {
@@ -134,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         if (!mp.isPlaying()) {
             // Stopping
             mp.start();
-            playBtn.setBackgroundResource(R.drawable.stop);
+            playBtn.setBackgroundResource(R.drawable.pause);
 
         } else {
             // Playing
