@@ -24,7 +24,7 @@ public class Library extends AppCompatActivity {
             }
         });
 
-        // Songs
+        // Songs Button
         Button songs = (Button)findViewById(R.id.songs);
 
         songs.setOnClickListener(new View.OnClickListener() {
