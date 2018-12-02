@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
@@ -39,7 +40,7 @@ public class SongList extends AppCompatActivity {
 
         Collections.sort(songList, new Comparator<Song>(){
             public int compare(Song a, Song b){
-                return a.getTitle().compareTo(b.getTitle());
+                return a.getAlbum().compareTo(b.getAlbum());
             }
         });
 
@@ -50,6 +51,7 @@ public class SongList extends AppCompatActivity {
     public void songPicked(View view){
         musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
         musicSrv.playSong();
+        startActivity(new Intent(SongList.this, MainActivity.class));
     }
 
 //    @Override
@@ -119,12 +121,15 @@ public class SongList extends AppCompatActivity {
                     (android.provider.MediaStore.Audio.Media._ID);
             int artistColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.ARTIST);
+            int albumColumn = musicCursor.getColumnIndex
+                    (MediaStore.Audio.Media.ALBUM);
             //add songs to list
             do {
                 long thisId = musicCursor.getLong(idColumn);
                 String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
-                songList.add(new Song(thisId, thisTitle, thisArtist));
+                String thisAlbum = musicCursor.getString(albumColumn);
+                songList.add(new Song(thisId, thisTitle, thisArtist, thisAlbum));
             }
             while (musicCursor.moveToNext());
         }
