@@ -24,6 +24,7 @@ public class MusicService extends Service implements
     private ArrayList<Song> songs;
     //current position
     private int songPosn;
+    private Uri trackUri;
 
     private final IBinder musicBind = new MusicBinder();
     public void onCompletion(MediaPlayer mp) {
@@ -66,16 +67,7 @@ public class MusicService extends Service implements
     }
 
     public void playSong(){
-//        // Now Playing View
-//        Button np = (Button)findViewById(R.id.nowPlayingBtn);
-//
-//        np.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MusicService.this, MainActivity.class));
-//                //finish();
-//            }
-//        });
+
         //play a song
         player.reset();
         //get song
@@ -83,7 +75,10 @@ public class MusicService extends Service implements
         //get id
         long currSong = playSong.getID();
         //set uri
-        Uri trackUri = ContentUris.withAppendedId(
+//        Uri trackUri = ContentUris.withAppendedId(
+//                android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+//                currSong);
+        trackUri = ContentUris.withAppendedId(
                 android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 currSong);
         try{
@@ -93,6 +88,10 @@ public class MusicService extends Service implements
             Log.e("MUSIC SERVICE", "Error setting data source", e);
         }
         player.prepareAsync();
+    }
+
+    public Uri getUri() {
+        return trackUri;
     }
 
     public void initMusicPlayer(){
@@ -113,5 +112,42 @@ public class MusicService extends Service implements
         MusicService getService() {
             return MusicService.this;
         }
+    }
+
+    public int getPosn(){
+        return player.getCurrentPosition();
+    }
+
+    public int getDur(){
+        return player.getDuration();
+    }
+
+    public boolean isPng(){
+        return player.isPlaying();
+    }
+
+    public void pausePlayer(){
+        player.pause();
+    }
+
+    public void seek(int posn){
+        player.seekTo(posn);
+    }
+
+    public void go(){
+        player.start();
+    }
+
+    public void playPrev(){
+        songPosn--;
+        if(songPosn<0) songPosn=songs.size()-1;
+        playSong();
+    }
+
+    //skip to next
+    public void playNext(){
+        songPosn++;
+        if(songPosn>songs.size()) songPosn=0;
+        playSong();
     }
 }

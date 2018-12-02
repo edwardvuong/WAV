@@ -11,8 +11,12 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import android.widget.MediaController.MediaPlayerControl;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.Serializable;
+
+
+public class MainActivity extends AppCompatActivity implements MediaPlayerControl, Serializable {
 
     Button playBtn;
     SeekBar positionBar;
@@ -23,11 +27,16 @@ public class MainActivity extends AppCompatActivity {
     int totalTime;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        Intent i = getIntent();
+//        MusicService musicSrv = (MusicService)i.getSerializableExtra("MusicService");
+//        //boolean musicBound = (boolean) i.getSerializableExtra("Bound");
+//
+//        musicSrv.playSong();
 
         playBtn = (Button) findViewById(R.id.playBtn);
         elapsedTimeLabel = (TextView) findViewById(R.id.elapsedTimeLabel);
@@ -98,13 +107,14 @@ public class MainActivity extends AppCompatActivity {
                         msg.what = mp.getCurrentPosition();
                         handler.sendMessage(msg);
                         Thread.sleep(1000);
-                    } catch (InterruptedException e) {}
+                    } catch (InterruptedException e) {
+                    }
                 }
             }
         }).start();
 
         // Library Button
-        Button btn = (Button)findViewById(R.id.librarybtn);
+        Button btn = (Button) findViewById(R.id.librarybtn);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, Library.class));
             }
         });
-
 
 
     }
@@ -128,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             String elapsedTime = createTimeLabel(currentPosition);
             elapsedTimeLabel.setText(elapsedTime);
 
-            String remainingTime = createTimeLabel(totalTime-currentPosition);
+            String remainingTime = createTimeLabel(totalTime - currentPosition);
             remainingTimeLabel.setText("- " + remainingTime);
         }
     };
@@ -159,4 +168,169 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public int getDuration() {
+        return 0;
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        return 0;
+    }
+
+    @Override
+    public void seekTo(int i) {
+
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return false;
+    }
+
+    @Override
+    public int getBufferPercentage() {
+        return 0;
+    }
+
+    @Override
+    public boolean canPause() {
+        return false;
+    }
+
+    @Override
+    public boolean canSeekBackward() {
+        return false;
+    }
+
+    @Override
+    public boolean canSeekForward() {
+        return false;
+    }
+
+    @Override
+    public int getAudioSessionId() {
+        return 0;
+    }
 }
+
+//    private MusicController controller;
+//
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//
+//        setController();
+//
+////        Intent i = getIntent();
+////        MusicService musicSrv = (MusicService)i.getSerializableExtra("MusicService");
+////        //boolean musicBound = (boolean) i.getSerializableExtra("Bound");
+////        // MusicService musicSrv = getIntent().getExtras().getSerializableExtras("MusicService");
+////        boolean musicBound = getIntent().getExtras().getBoolean("Bound");
+//    }
+//    private void setController(){
+//        //set the controller up
+//        controller = new MusicController(this);
+//        controller.setPrevNextListeners(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                playNext();
+//            }
+//        }, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                playPrev();
+//            }
+//        });
+//        controller.setMediaPlayer(this);
+//        controller.setAnchorView(findViewById(R.id.song_list));
+//        controller.setEnabled(true);
+//    }
+//
+//    MusicService musicSrv;
+//    boolean musicBound;
+//    //play next
+//    private void playNext(){
+//        musicSrv.playNext();
+//        controller.show(0);
+//    }
+//
+//    //play previous
+//    private void playPrev(){
+//        musicSrv.playPrev();
+//        controller.show(0);
+//    }
+//
+//    @Override
+//    public void pause() {
+//        musicSrv.pausePlayer();
+//    }
+//
+//    @Override
+//    public void seekTo(int pos) {
+//        musicSrv.seek(pos);
+//    }
+//
+//    @Override
+//    public void start() {
+//        musicSrv.go();
+//    }
+//
+//    @Override
+//    public int getDuration() {
+//        if(musicSrv!=null && musicBound && musicSrv.isPng())
+//        return musicSrv.getDur();
+//        else return 0;
+//    }
+//
+//    @Override
+//    public int getCurrentPosition() {
+//        if(musicSrv!=null && musicBound && musicSrv.isPng())
+//            return musicSrv.getPosn();
+//        else return 0;
+//    }
+//
+//
+//    @Override
+//    public boolean isPlaying() {
+//        if(musicSrv!=null && musicBound)
+//        return musicSrv.isPng();
+//        return false;
+//    }
+//
+//    @Override
+//    public int getBufferPercentage() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public boolean canPause() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean canSeekBackward() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean canSeekForward() {
+//        return true;
+//    }
+//
+//    @Override
+//    public int getAudioSessionId() {
+//        return 0;
+//    }
+//}

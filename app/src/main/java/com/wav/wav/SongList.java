@@ -1,5 +1,6 @@
 package com.wav.wav;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,7 +22,7 @@ import android.view.View;
 
 import com.wav.wav.MusicService.MusicBinder;
 
-public class SongList extends AppCompatActivity {
+public class SongList extends AppCompatActivity implements Serializable {
     private ArrayList<Song> songList;
     private ListView songView;
     private MusicService musicSrv;
@@ -52,6 +53,14 @@ public class SongList extends AppCompatActivity {
         musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
         musicSrv.playSong();
         startActivity(new Intent(SongList.this, MainActivity.class));
+
+//        Intent intent = new Intent(this, MainActivity.class);
+//        intent.putExtra("MusicService", (Serializable) musicSrv);
+//        intent.putExtra("Bound", (Serializable) musicBound);
+//        startActivity(intent);
+
+        //String intentData = gson.toJson()
+
     }
 
 //    @Override
@@ -72,6 +81,7 @@ public class SongList extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (musicBound) unbindService(musicConnection);
         stopService(playIntent);
         musicSrv=null;
         super.onDestroy();
@@ -88,6 +98,7 @@ public class SongList extends AppCompatActivity {
             //pass list
             musicSrv.setList(songList);
             musicBound = true;
+
         }
 
         @Override
