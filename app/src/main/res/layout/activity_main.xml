@@ -83,6 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="Now Playing"
+        android:onClick="toNowPlaying"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="93dp" />
 

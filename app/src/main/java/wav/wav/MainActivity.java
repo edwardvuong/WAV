@@ -144,11 +144,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void songPicked(View view){
 
-        // Library Button
+     startActivity(new Intent(MainActivity.this, Playing.class).putExtra("SetSong", Integer.toString(Integer.parseInt(view.getTag().toString()))).putExtra("songList", songList));
 
-        System.out.println(Integer.parseInt(view.getTag().toString()));
-
-                 startActivity(new Intent(MainActivity.this, Playing.class).putExtra("SetSong", Integer.toString(Integer.parseInt(view.getTag().toString()))).putExtra("songList", songList));
 
 
     }
@@ -156,7 +153,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    public void toNowPlaying (View view) {
+        startActivity(new Intent(MainActivity.this, Playing.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
 
+
+    }
 
 
 

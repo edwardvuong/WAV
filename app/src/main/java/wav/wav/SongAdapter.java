@@ -58,4 +58,10 @@ public class SongAdapter extends BaseAdapter {
         return songLay;
     }
 
+
+    public View getViewArtist(){
+
+    }
+
+
 }

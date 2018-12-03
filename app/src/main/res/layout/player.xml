@@ -17,9 +17,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Library"
+            android:onClick="toLib"
             tools:layout_editor_absoluteX="4dp"
             tools:layout_editor_absoluteY="4dp"
             tools:text="Library" />
+
     </TableRow>
 
 

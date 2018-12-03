@@ -50,12 +50,14 @@ public class Playing extends AppCompatActivity {
     protected boolean musicBound=false;
 
 
-    protected TextView songTitle;
+    TextView songTitle;
 
-    protected  TextView songAlbum;
-    protected  TextView songArtist;
+    TextView songAlbum;
+    TextView songArtist;
 
-    protected ImageView albumArt;
+    ImageView albumArt;
+
+    Button libBtn;
 
     protected boolean paused=false, playbackPaused=false;
 
@@ -76,10 +78,9 @@ public class Playing extends AppCompatActivity {
     Button nextBtn;
     Button prevBtn;
 
+    private boolean canChange = true;
 
-
-
-
+    private boolean wasPlaying = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +155,11 @@ public class Playing extends AppCompatActivity {
         songArtist.setText(musicSrv.getSongArtist()+" ― ");
 
         albumArt.setImageDrawable(Drawable.createFromPath(musicSrv.getSongAlbumArtId()));
+        albumArt.setMinimumWidth(500);
+        albumArt.setMaxWidth(500);
+        albumArt.setMinimumHeight(500);
+        albumArt.setMaxHeight(500);
+        albumArt.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
         // Position Bar
         positionBar = (SeekBar) findViewById(R.id.positionBar);
@@ -173,10 +179,24 @@ public class Playing extends AppCompatActivity {
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {
 
+                        if(musicSrv.isPng()){
+                            wasPlaying = true;
+                        }
+                        else{
+                            wasPlaying = false;
+                        }
+
+                        canChange=false;
+                        musicSrv.pausePlayer();
                     }
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
+                        canChange =true;
+
+                        if(wasPlaying) {
+                            musicSrv.go();
+                        }
 
                     }
                 }
@@ -238,6 +258,12 @@ public class Playing extends AppCompatActivity {
 
             String remainingTime = createTimeLabel(totalTime-currentPosition);
             remainingTimeLabel.setText("- " + remainingTime);
+
+            if (totalTime-currentPosition <=0 && canChange == true ){
+                musicSrv.playNext();
+                updateInfo();
+            }
+
         }
     };
 
@@ -349,6 +375,13 @@ public class Playing extends AppCompatActivity {
 
 
 
+
+    public void toLib(View view){
+
+        startActivity(new Intent(Playing.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+
+
+    }
 
 
 
