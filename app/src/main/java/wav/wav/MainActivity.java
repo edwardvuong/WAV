@@ -104,14 +104,20 @@ public class MainActivity extends AppCompatActivity {
 
             int durationColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
 
+            int albumColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM);
+
+           int albumArtIDColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
+
             //add songs to list
             do {
                 long thisId = musicCursor.getLong(idColumn);
                 String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
                 int thisDuration = musicCursor.getInt(durationColumn);
+                String thisAlbum = musicCursor.getString(albumColumn);
+                long thisAlbumArtID = musicCursor.getLong(albumArtIDColumn);
 
-                songList.add(new Song(thisId, thisTitle, thisArtist, thisDuration));
+                songList.add(new Song(thisId, thisTitle, thisArtist, thisDuration, thisAlbum, getCoverArtPath(musicResolver, thisAlbumArtID)));
             }
             while (musicCursor.moveToNext());
         }
@@ -119,6 +125,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private static String getCoverArtPath( ContentResolver musicResolver, long androidAlbumId) {
+        String path = null;
+        Cursor c = musicResolver.query(
+                MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.Audio.Albums.ALBUM_ART},
+                MediaStore.Audio.Albums._ID + "=?",
+                new String[]{Long.toString(androidAlbumId)},
+                null);
+        if (c != null) {
+            if (c.moveToFirst()) {
+                path = c.getString(0);
+            }
+            c.close();
+        }
+        return path;
+    }
 
     public void songPicked(View view){
 

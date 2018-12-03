@@ -8,15 +8,20 @@ public class Song implements Parcelable{
     private long id;
     private String title;
     private String artist;
+    private String album;
 
     private  int duration;
 
+    private String albumArtID;
 
-    public Song(long songID, String songTitle, String songArtist, int songDuration) {
+
+    public Song(long songID, String songTitle, String songArtist, int songDuration, String songAlbum, String songAlbumArtID) {
         id=songID;
         title=songTitle;
         artist=songArtist;
         duration = songDuration;
+        album = songAlbum;
+        albumArtID = songAlbumArtID;
     }
 
 
@@ -25,6 +30,8 @@ public class Song implements Parcelable{
         title = in.readString();
         artist = in.readString();
         duration = in.readInt();
+        album = in.readString();
+        albumArtID = in.readString();
     }
 
     public static final Creator<Song> CREATOR = new Creator<Song>() {
@@ -43,6 +50,8 @@ public class Song implements Parcelable{
     public String getTitle(){return title;}
     public String getArtist(){return artist;}
     public  int getDuration() {return duration;}
+    public String getAlbum(){return album;}
+    public String getAlbumArtID(){return albumArtID;};
 
     @Override
     public int describeContents() {
@@ -55,5 +64,7 @@ public class Song implements Parcelable{
         dest.writeString(title);
         dest.writeString(artist);
         dest.writeInt(duration);
+        dest.writeString(album);
+        dest.writeString(albumArtID);
     }
 }

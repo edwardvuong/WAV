@@ -3,11 +3,13 @@ package wav.wav;
 
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import 	android.Manifest;
 
 import android.os.Handler;
 import android.os.Message;
+import android.os.TestLooperManager;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import android.net.Uri;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 
@@ -47,6 +50,13 @@ public class Playing extends AppCompatActivity {
     protected boolean musicBound=false;
 
 
+    protected TextView songTitle;
+
+    protected  TextView songAlbum;
+    protected  TextView songArtist;
+
+    protected ImageView albumArt;
+
     protected boolean paused=false, playbackPaused=false;
 
 
@@ -57,8 +67,14 @@ public class Playing extends AppCompatActivity {
     SeekBar volumeBar;
     TextView elapsedTimeLabel;
     TextView remainingTimeLabel;
+
+
     AnimationDrawable ptp; //PlayToPause animation
     int totalTime;
+
+
+    Button nextBtn;
+    Button prevBtn;
 
 
 
@@ -77,6 +93,11 @@ public class Playing extends AppCompatActivity {
        // loopBtn= (Button) findViewById(R.id.loopBtn);
         elapsedTimeLabel = (TextView) findViewById(R.id.elapsedTimeLabel);
         remainingTimeLabel = (TextView) findViewById(R.id.remainingTimeLabel);
+
+        nextBtn = (Button) findViewById(R.id.nextBtn);
+        prevBtn = (Button) findViewById(R.id.prevBtn);
+
+
 
 
     }
@@ -97,80 +118,7 @@ public class Playing extends AppCompatActivity {
 
             playSong();
 
-            //mp.setVolume(0.5f, 0.5f);
-            totalTime = musicSrv.getDur();
-            System.out.println("Totaltime: "+musicSrv.getDur());
-            System.out.println("Posn: "+musicSrv.getPosn());
-
-
-
-            // Position Bar
-            positionBar = (SeekBar) findViewById(R.id.positionBar);
-            positionBar.setMax(totalTime);
-            System.out.println("MAX: "+positionBar.getMax());
-            positionBar.setOnSeekBarChangeListener(
-                    new SeekBar.OnSeekBarChangeListener() {
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                            if (fromUser) {
-                                musicSrv.seek(progress);
-                                positionBar.setProgress(progress);
-                                System.out.println("Progress: "+progress);
-                                System.out.println("POSN2: "+musicSrv.getPosn());
-
-                            }
-                        }
-
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar) {
-
-                        }
-
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar) {
-
-                        }
-                    }
-            );
-
-
-            // Volume Bar
-            volumeBar = (SeekBar) findViewById(R.id.volumeBar);
-            volumeBar.setOnSeekBarChangeListener(
-                    new SeekBar.OnSeekBarChangeListener() {
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                            float volumeNum = progress / 100f;
-                            //mp.setVolume(volumeNum, volumeNum);
-                        }
-
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar) {
-
-                        }
-
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar) {
-
-                        }
-                    }
-            );
-
-
-            // Thread (Update positionBar & timeLabel)
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (musicSrv != null) {
-                        try {
-                            Message msg = new Message();
-                            msg.what = musicSrv.getPosn();
-                            handler.sendMessage(msg);
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {}
-                    }
-                }
-            }).start();
+            updateInfo();
 
 
         }
@@ -186,6 +134,94 @@ public class Playing extends AppCompatActivity {
         }
     };
 
+
+
+    public void updateInfo(){
+
+        //mp.setVolume(0.5f, 0.5f);
+        totalTime = musicSrv.getDur();
+
+        songTitle = (TextView) findViewById(R.id.song_title) ;
+        songAlbum = (TextView) findViewById(R.id.song_album);
+        songArtist = (TextView) findViewById(R.id.song_artist);
+
+        albumArt = (ImageView) findViewById(R.id.imageView3);
+
+
+        songTitle.setText(musicSrv.getSongTitle());
+
+        songAlbum.setText(musicSrv.getSongAlbum());
+        songArtist.setText(musicSrv.getSongArtist()+" ― ");
+
+        albumArt.setImageDrawable(Drawable.createFromPath(musicSrv.getSongAlbumArtId()));
+
+        // Position Bar
+        positionBar = (SeekBar) findViewById(R.id.positionBar);
+        positionBar.setMax(totalTime);
+        System.out.println("MAX: "+positionBar.getMax());
+        positionBar.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        if (fromUser) {
+                            musicSrv.seek(progress);
+                            positionBar.setProgress(progress);
+
+                        }
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                }
+        );
+
+
+        // Volume Bar
+        volumeBar = (SeekBar) findViewById(R.id.volumeBar);
+        volumeBar.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        float volumeNum = progress / 100f;
+                        //mp.setVolume(volumeNum, volumeNum);
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                }
+        );
+
+
+        // Thread (Update positionBar & timeLabel)
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (musicSrv != null) {
+                    try {
+                        Message msg = new Message();
+                        msg.what = musicSrv.getPosn();
+                        handler.sendMessage(msg);
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {}
+                }
+            }
+        }).start();
+
+    }
 
 
 
@@ -236,7 +272,7 @@ public class Playing extends AppCompatActivity {
         musicSrv.setSong(Integer.parseInt(s));
         musicSrv.playSong();
 
-        playBtn.setBackgroundResource(R.drawable.stop);
+        playBtn.setBackgroundResource(R.drawable.pause);
 
         System.out.println("DURATION: "+musicSrv.getDur());
 
@@ -282,10 +318,8 @@ public class Playing extends AppCompatActivity {
             // Stopping
 
 
-            playBtn.setBackgroundResource(R.drawable.playtopauseanim);
-            ptp = (AnimationDrawable) playBtn.getBackground();
+            playBtn.setBackgroundResource(R.drawable.pause);
 
-            ptp.start();
             musicSrv.go();
 
 
@@ -298,6 +332,19 @@ public class Playing extends AppCompatActivity {
 
         }
 
+    }
+
+
+    public void nextBtnClick(View view){
+
+        musicSrv.playNext();
+        updateInfo();
+
+    }
+
+    public void prevBtnClick(View view){
+        musicSrv.playPrev();
+        updateInfo();
     }
 
 

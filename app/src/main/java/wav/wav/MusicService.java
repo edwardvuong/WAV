@@ -183,6 +183,17 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         return songs.get(songPosn).getDuration();
     }
 
+
+    public String getSongTitle(){
+        return songs.get(songPosn).getTitle();
+    }
+
+    public String getSongArtist(){return  songs.get(songPosn).getArtist();}
+
+    public String getSongAlbum(){return  songs.get(songPosn).getAlbum();}
+
+    public String getSongAlbumArtId(){return songs.get(songPosn).getAlbumArtID();}
+
     public boolean isPng(){
         return player.isPlaying();
     }
