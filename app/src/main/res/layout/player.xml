@@ -4,21 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="wav.wav.MainActivity"
+    tools:context=".MainActivity"
     android:orientation="vertical"
+    android:background="@drawable/plainmount"
     android:gravity="center_horizontal">
 
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <Button
+            android:id="@+id/librarybtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Library"
+            tools:layout_editor_absoluteX="4dp"
+            tools:layout_editor_absoluteY="4dp"
+            tools:text="Library" />
+    </TableRow>
+
+
     <ImageView
+        android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="50dp"
         android:src="@drawable/image"
-        android:layout_marginTop="60dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
         android:id="@+id/positionBar"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"/>
+        tools:layout_editor_absoluteX="68dp"
+        tools:layout_editor_absoluteY="318dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,31 +51,54 @@
             android:id="@+id/elapsedTimeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0:11"
-            android:layout_marginLeft="40dp"/>
+            android:layout_marginLeft="40dp"
+            android:text="0:11" />
         <TextView
             android:id="@+id/remainingTimeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-1:49"
-            android:layout_marginLeft="240dp"/>
+            android:layout_marginLeft="240dp"
+            android:text="-1:49" />
     </LinearLayout>
 
     <Button
         android:id="@+id/playBtn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
         android:background="@drawable/play"
-        android:layout_marginTop="40dp"
-        android:onClick="playBtnClick"/>
+        android:onClick="playBtnClick"
+        tools:layout_editor_absoluteX="149dp"
+        tools:layout_editor_absoluteY="349dp" />
 
     <Button
-        android:id="@+id/loopBtn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/loop"
-        android:layout_marginLeft="80dp"
-        android:onClick="loopBtnClick"/>
+        android:id="@+id/nextBtn"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/next"
+        android:onClick="nextBtnClick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/playBtn"
+        tools:layout_editor_absoluteY="349dp" />
+
+    <Button
+        android:id="@+id/prevBtn"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/prev"
+        android:onClick="prevBtnClick"
+        app:layout_constraintEnd_toStartOf="@+id/playBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="349dp" />
+
+
 
     <LinearLayout
         android:layout_width="match_parent"

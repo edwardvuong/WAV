@@ -6,6 +6,7 @@ import android.os.Build;
 import 	android.Manifest;
 
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -29,14 +30,21 @@ import android.view.View;
 import wav.wav.MusicService.MusicBinder;
 
 
+import android.widget.MediaController.MediaPlayerControl;
+
+
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<Song> songList;
-    private ListView songView;
+    protected ArrayList<Song> songList;
+    protected ListView songView;
 
-    private MusicService musicSrv;
-    private Intent playIntent;
-    private boolean musicBound=false;
+    protected MusicService musicSrv;
+    protected Intent playIntent;
+    protected boolean musicBound=false;
+
+    protected MusicController controller;
+
+    protected boolean paused=false, playbackPaused=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,27 +79,10 @@ public class MainActivity extends AppCompatActivity {
         SongAdapter songAdt = new SongAdapter(this, songList);
         songView.setAdapter(songAdt);
 
+
     }
 
 
-    //connect to the service
-    private ServiceConnection musicConnection = new ServiceConnection(){
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            MusicBinder binder = (MusicBinder)service;
-            //get service
-            musicSrv = binder.getService();
-            //pass list
-            musicSrv.setList(songList);
-            musicBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            musicBound = false;
-        }
-    };
 
     public void getSongList() {
         //retrieve song info
@@ -109,42 +100,44 @@ public class MainActivity extends AppCompatActivity {
                     (android.provider.MediaStore.Audio.Media._ID);
             int artistColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.ARTIST);
+
+
+            int durationColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
+
             //add songs to list
             do {
                 long thisId = musicCursor.getLong(idColumn);
                 String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
-                songList.add(new Song(thisId, thisTitle, thisArtist));
+                int thisDuration = musicCursor.getInt(durationColumn);
+
+                songList.add(new Song(thisId, thisTitle, thisArtist, thisDuration));
             }
             while (musicCursor.moveToNext());
         }
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(playIntent==null){
-            playIntent = new Intent(this, MusicService.class);
-            bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
-            startService(playIntent);
-        }
-    }
 
 
     public void songPicked(View view){
-        musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
-        musicSrv.playSong();
+
+        // Library Button
+
+        System.out.println(Integer.parseInt(view.getTag().toString()));
+
+                 startActivity(new Intent(MainActivity.this, Playing.class).putExtra("SetSong", Integer.toString(Integer.parseInt(view.getTag().toString()))).putExtra("songList", songList));
+
 
     }
 
 
 
-    @Override
-    protected void onDestroy() {
-        stopService(playIntent);
-        musicSrv=null;
-        super.onDestroy();
-    }
+
+
+
+
+
+
 
 }
