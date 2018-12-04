@@ -16,6 +16,8 @@ import java.util.Comparator;
 import android.net.Uri;
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 
@@ -32,6 +34,8 @@ import wav.wav.MusicService.MusicBinder;
 
 import android.widget.MediaController.MediaPlayerControl;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -146,18 +150,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void songPicked(View view){
-     startActivity(new Intent(MainActivity.this, Playing.class).putExtra("SetSong", Integer.toString(Integer.parseInt(view.getTag().toString()))).putExtra("songList", songList));
+     startActivity(new Intent(MainActivity.this, Playing.class).putExtra("SetSong", Integer.toString(Integer.parseInt(view.getTag().toString()))).putExtra("songList", songAdt.retList()));
 
     }
 
 
     public void toNowPlaying (View view) {
+
         startActivity(new Intent(MainActivity.this, Playing.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
 
 
     }
 
     public void toArtists (View view) {
+        songAdt.clearSearch();
         songAdt.setSection("artist");
         songView.setAdapter(songAdt);
         title = (TextView) findViewById(R.id.sectionTitle);
@@ -165,6 +171,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toAlbums (View view) {
+
+        songAdt.clearSearch();
+
         songAdt.setSection("album");
         songView.setAdapter(songAdt);
         title = (TextView) findViewById(R.id.sectionTitle);
@@ -173,10 +182,43 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void toSongs (View view) {
+        songAdt.clearSearch();
         songAdt.setSection("song");
         songView.setAdapter(songAdt);
         title = (TextView) findViewById(R.id.sectionTitle);
         title.setText("Songs");
+    }
+
+
+    public void albumPicked(View view){
+
+
+
+        TextView t = view.findViewById(R.id.song_album);
+
+
+        songAdt.search(t.getText().toString());
+        songAdt.setSection("song");
+
+        songView.setAdapter(songAdt);
+
+
+    }
+
+
+    public void artistPicked(View view){
+
+
+
+        TextView t = view.findViewById(R.id.song_artist);
+
+
+        songAdt.search(t.getText().toString());
+        songAdt.setSection("song");
+
+        songView.setAdapter(songAdt);
+
+
     }
 
 }
