@@ -44,11 +44,9 @@ public class Playing extends AppCompatActivity {
 
     protected ArrayList<Song> songList;
     protected ListView songView;
-
     protected MusicService musicSrv;
     protected Intent playIntent;
     protected boolean musicBound = false;
-
 
     TextView songTitle;
     TextView songAlbum;
@@ -339,7 +337,6 @@ public class Playing extends AppCompatActivity {
 
     }
 
-
     public void nextBtnClick(View view) {
 
         musicSrv.playNext();
@@ -354,10 +351,7 @@ public class Playing extends AppCompatActivity {
 
 
     public void toLib(View view) {
-
         startActivity(new Intent(Playing.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-
-
     }
 
     public void songPicked(View view){
