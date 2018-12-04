@@ -142,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void songPicked(View view){
-
      startActivity(new Intent(MainActivity.this, Playing.class).putExtra("SetSong", Integer.toString(Integer.parseInt(view.getTag().toString()))).putExtra("songList", songList));
 
     }

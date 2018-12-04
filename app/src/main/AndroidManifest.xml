@@ -26,7 +26,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".Library">
+        <activity android:name=".MainActivity">
             android:name="wav.wav.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"

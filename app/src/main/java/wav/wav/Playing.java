@@ -229,6 +229,13 @@ public class Playing extends AppCompatActivity {
             }
         }).start();
 
+        songView = (ListView)findViewById(R.id.song_list);
+
+        ArrayList<Song> queue = musicSrv.getQueue();
+
+        SongAdapter songAdt = new SongAdapter(this, queue);
+        songView.setAdapter(songAdt);
+
     }
 
 
@@ -353,5 +360,9 @@ public class Playing extends AppCompatActivity {
 
     }
 
+    public void songPicked(View view){
+        startActivity(new Intent(Playing.this, Playing.class).putExtra("SetSong", Integer.toString(Integer.parseInt(view.getTag().toString()))).putExtra("songList", songList));
+
+    }
 
 }

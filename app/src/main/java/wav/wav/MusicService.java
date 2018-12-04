@@ -15,6 +15,8 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 import android.app.Notification;
@@ -32,9 +34,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     //current position
     private int songPosn;
 
+    //music queue
+    //private Queue<Song> queue = new LinkedList<Song>();
+
     private final IBinder musicBind = new MusicBinder();
-
-
     private String songTitle = "";
     private static final int NOTIFY_ID = 1;
 
@@ -63,12 +66,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         songPosn = 0;
         //create player
         player = new MediaPlayer();
-
         initMusicPlayer();
-
         rand = new Random();
-
-
     }
 
     public void initMusicPlayer() {
@@ -77,7 +76,6 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         player.setWakeMode(getApplicationContext(),
                 PowerManager.PARTIAL_WAKE_LOCK);
         player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
         player.setOnPreparedListener(this);
         player.setOnCompletionListener(this);
         player.setOnErrorListener(this);
@@ -115,9 +113,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
         songTitle = playSong.getTitle();
 
-//get id
+        //get id
         long currSong = playSong.getID();
-//set uri
+        //set uri
         Uri trackUri = ContentUris.withAppendedId(
                 android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 currSong);
@@ -229,6 +227,13 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             if (songPosn >= songs.size()) songPosn = 0;
         }
         playSong();
+    }
+
+    public ArrayList<Song> getQueue(){
+        ArrayList<Song> queue = new ArrayList();
+        for(int i = songPosn; i < songs.size(); i++)
+            queue.add(songs.get(i));
+        return queue;
     }
 
 

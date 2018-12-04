@@ -84,4 +84,8 @@ public class Song implements Parcelable {
         dest.writeString(album);
         dest.writeString(albumArtID);
     }
+
+    public String toString(){
+        return title;
+    }
 }
