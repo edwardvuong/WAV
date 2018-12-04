@@ -1,8 +1,14 @@
 package wav.wav;
 
+import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -25,12 +31,14 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-//LIBRARY
+
 import android.content.pm.PackageManager;
 import android.os.Build;
-import 	android.Manifest;
+import android.Manifest;
 
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
@@ -40,9 +48,12 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
 import android.net.Uri;
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 
@@ -60,14 +71,19 @@ import wav.wav.MusicService.MusicBinder;
 import android.widget.MediaController.MediaPlayerControl;
 import android.widget.TextView;
 
-//playing
+import org.w3c.dom.Text;
+
+
+//PLAYER
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Build;
+
 import java.util.ArrayList;
 import java.util.Collections;
+
 import android.Manifest;
 
 import android.os.Handler;
@@ -107,25 +123,35 @@ public class DemoActivity extends AppCompatActivity {
 
     private SlidingUpPanelLayout mLayout;
 
+    /**
+     * LIBRARY
+     *
+     * @param savedInstanceState
+     */
 
-    //LIBRARY
+
     protected ArrayList<Song> songList;
     protected ListView songView;
 
     protected MusicService musicSrv;
     protected Intent playIntent;
-    protected boolean musicBound=false;
+    protected boolean musicBound = false;
 
     protected MusicController controller;
 
-    protected boolean paused=false, playbackPaused=false;
+    protected boolean paused = false, playbackPaused = false;
 
     TextView title;
 
     SongAdapter songAdt;
 
 
-    //playing
+    /**
+     * PLAYER
+     *
+     * @param savedInstanceState
+     */
+
 //    protected ArrayList<Song> songList;
 //    protected ListView songView;
 //    protected MusicService musicSrv;
@@ -138,7 +164,7 @@ public class DemoActivity extends AppCompatActivity {
     ImageView albumArt;
     Button libBtn;
 
-   // protected boolean paused = false, playbackPaused = false;
+    // protected boolean paused = false, playbackPaused = false;
 
 
     Button playBtn;
@@ -157,7 +183,7 @@ public class DemoActivity extends AppCompatActivity {
     Button prevBtn;
     Button shuffleBtn;
 
-//    SongAdapter songAdt;
+    //  SongAdapter songAdt;
     ArrayList<Song> queue;
     private AudioManager audioManager;
 
@@ -165,11 +191,12 @@ public class DemoActivity extends AppCompatActivity {
 
     private boolean wasPlaying = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo);
+
+//        setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
 
         ListView lv = (ListView) findViewById(R.id.list);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -212,7 +239,7 @@ public class DemoActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
-                your_array_list );
+                your_array_list);
 
         lv.setAdapter(arrayAdapter);
 
@@ -249,25 +276,30 @@ public class DemoActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * LIBRARY
+         */
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
 
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
 
                 // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
                 // app-defined int constant
                 return;
-            }}
+            }
+        }
 
 
-        songView = (ListView)findViewById(R.id.song_list);
+        songView = (ListView) findViewById(R.id.song_list);
         songList = new ArrayList<Song>();
 
         getSongList();
 
-        Collections.sort(songList, new Comparator<Song>(){
-            public int compare(Song a, Song b){
+        Collections.sort(songList, new Comparator<Song>() {
+            public int compare(Song a, Song b) {
                 return a.getTitle().compareTo(b.getTitle());
             }
         });
@@ -275,9 +307,9 @@ public class DemoActivity extends AppCompatActivity {
         songAdt = new SongAdapter(this, songList, "song");
         songView.setAdapter(songAdt);
 
-        //PLAYER
-        //songList = getIntent().getParcelableArrayListExtra("songList");
-
+        /**
+         *  PLAYER
+         */
 
         playBtn = (Button) findViewById(R.id.playBtn);
         // loopBtn= (Button) findViewById(R.id.loopBtn);
@@ -288,7 +320,9 @@ public class DemoActivity extends AppCompatActivity {
         prevBtn = (Button) findViewById(R.id.prevBtn);
 
         shuffleBtn = (Button) findViewById(R.id.shuffleBtn);
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -312,7 +346,7 @@ public class DemoActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_toggle: {
                 if (mLayout != null) {
                     if (mLayout.getPanelState() != PanelState.HIDDEN) {
@@ -352,6 +386,10 @@ public class DemoActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+    /**
+     * LIBRARY
+     */
     public void getSongList() {
         //retrieve song info
         ContentResolver musicResolver = getContentResolver();
@@ -360,7 +398,7 @@ public class DemoActivity extends AppCompatActivity {
         String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
         Cursor musicCursor = musicResolver.query(musicUri, null, selection, null, sortOrder);
 
-        if(musicCursor!=null && musicCursor.moveToFirst()){
+        if (musicCursor != null && musicCursor.moveToFirst()) {
             //get columns
             int titleColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.TITLE);
@@ -388,13 +426,14 @@ public class DemoActivity extends AppCompatActivity {
                 songList.add(new Song(thisId, thisTitle, thisArtist, thisDuration, thisAlbum, getCoverArtPath(musicResolver, thisAlbumArtID)));
             }
             while (musicCursor.moveToNext());
-            musicCursor.close();;
+            musicCursor.close();
+            ;
         }
 
     }
 
 
-    private static String getCoverArtPath( ContentResolver musicResolver, long androidAlbumId) {
+    private static String getCoverArtPath(ContentResolver musicResolver, long androidAlbumId) {
         String path = null;
         Cursor c = musicResolver.query(
                 MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
@@ -411,25 +450,39 @@ public class DemoActivity extends AppCompatActivity {
         return path;
     }
 
-//    public void songPicked(View view){
-//        startActivity(new Intent(DemoActivity.this, Playing.class).putExtra("SetSong", Integer.toString(Integer.parseInt(view.getTag().toString()))).putExtra("songList", songList));
+    public void songPicked(View view) {
+        startActivity(new Intent(DemoActivity.this, DemoActivity.class).setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT).putExtra("SetSong", Integer.toString(Integer.parseInt(view.getTag().toString()))).putExtra("songList", songList));
+        if (mLayout != null) {
+            if (mLayout.getAnchorPoint() == 1.0f) {
+                mLayout.setAnchorPoint(0.7f);
+                mLayout.setPanelState(PanelState.ANCHORED);
+            } else {
+                mLayout.setAnchorPoint(1.0f);
+                mLayout.setPanelState(PanelState.COLLAPSED);
+            }
+        }
+    }
+
+
+//    public void toNowPlaying(View view) {
+//
+//        startActivity(new Intent(DemoActivity.this, Playing.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+//
 //
 //    }
 
-
-    public void toNowPlaying (View view) {
-        startActivity(new Intent(DemoActivity.this, DemoActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-
-    }
-
-    public void toArtists (View view) {
+    public void toArtists(View view) {
+        songAdt.clearSearch();
         songAdt.setSection("artist");
         songView.setAdapter(songAdt);
         title = (TextView) findViewById(R.id.sectionTitle);
         title.setText("Artists");
     }
 
-    public void toAlbums (View view) {
+    public void toAlbums(View view) {
+
+        songAdt.clearSearch();
+
         songAdt.setSection("album");
         songView.setAdapter(songAdt);
         title = (TextView) findViewById(R.id.sectionTitle);
@@ -437,13 +490,46 @@ public class DemoActivity extends AppCompatActivity {
     }
 
 
-    public void toSongs (View view) {
+    public void toSongs(View view) {
+        songAdt.clearSearch();
         songAdt.setSection("song");
         songView.setAdapter(songAdt);
         title = (TextView) findViewById(R.id.sectionTitle);
         title.setText("Songs");
     }
 
+
+    public void albumPicked(View view) {
+
+
+        TextView t = view.findViewById(R.id.song_album);
+
+
+        songAdt.search(t.getText().toString());
+        songAdt.setSection("song");
+
+        songView.setAdapter(songAdt);
+
+
+    }
+
+
+    public void artistPicked(View view) {
+        TextView t = view.findViewById(R.id.song_artist);
+
+        songAdt.search(t.getText().toString());
+        songAdt.setSection("song");
+
+        songView.setAdapter(songAdt);
+
+
+    }
+
+    /**
+     * PLAYER
+     */
+
+    //connect to the service
     protected ServiceConnection musicConnection = new ServiceConnection() {
 
         @Override
@@ -455,11 +541,9 @@ public class DemoActivity extends AppCompatActivity {
             musicSrv.setList(songList);
             musicBound = true;
 
-
-//            playSong();
+            //  playSong();
 
             updateInfo();
-
 
         }
 
@@ -544,24 +628,20 @@ public class DemoActivity extends AppCompatActivity {
         volumeBar.setProgress(audioManager
                 .getStreamVolume(AudioManager.STREAM_MUSIC));
         volumeBar.setOnSeekBarChangeListener(
-                new SeekBar.OnSeekBarChangeListener()
-                {
+                new SeekBar.OnSeekBarChangeListener() {
                     @Override
-                    public void onProgressChanged(SeekBar arg0, int progress, boolean arg2)
-                    {
+                    public void onProgressChanged(SeekBar arg0, int progress, boolean arg2) {
                         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
                                 progress, 0);
                     }
 
                     @Override
-                    public void onStartTrackingTouch(SeekBar seekBar)
-                    {
+                    public void onStartTrackingTouch(SeekBar seekBar) {
 
                     }
 
                     @Override
-                    public void onStopTrackingTouch(SeekBar seekBar)
-                    {
+                    public void onStopTrackingTouch(SeekBar seekBar) {
 
                     }
                 }
@@ -584,7 +664,7 @@ public class DemoActivity extends AppCompatActivity {
             }
         }).start();
 
-        songView = (ListView)findViewById(R.id.list);
+        songView = (ListView) findViewById(R.id.song_list);
         queue = musicSrv.getQueue();
         songAdt = new SongAdapter(this, queue, "song");
         songView.setAdapter(songAdt);
@@ -617,11 +697,9 @@ public class DemoActivity extends AppCompatActivity {
         String timeLabel = "";
         int min = time / 1000 / 60;
         int sec = time / 1000 % 60;
-
         timeLabel = min + ":";
         if (sec < 10) timeLabel += "0";
         timeLabel += sec;
-
         return timeLabel;
     }
 
@@ -638,17 +716,13 @@ public class DemoActivity extends AppCompatActivity {
     }
 
 
-//    public void playSong() {
-//        String s = getIntent().getStringExtra("SetSong");
-//        musicSrv.setSong(Integer.parseInt(s));
-//        musicSrv.playSong();
-//
-//        playBtn.setBackgroundResource(R.drawable.pause);
-//
-//        System.out.println("DURATION: " + musicSrv.getDur());
-//
-//
-//    }
+    public void playSong() {
+        String s = getIntent().getStringExtra("SetSong");
+        musicSrv.setSong(Integer.parseInt(s));
+        musicSrv.playSong();
+        playBtn.setBackgroundResource(R.drawable.pause);
+        System.out.println("DURATION: " + musicSrv.getDur());
+    }
 
 
     @Override
@@ -706,9 +780,4 @@ public class DemoActivity extends AppCompatActivity {
         songAdt.notifyDataSetChanged();
     }
 
-
-    public void songPicked(View view){
-        startActivity(new Intent(DemoActivity.this, DemoActivity.class).putExtra("SetSong", Integer.toString(Integer.parseInt(view.getTag().toString()))).putExtra("songList", songList));
-
-    }
 }
