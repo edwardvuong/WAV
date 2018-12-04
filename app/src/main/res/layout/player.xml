@@ -12,6 +12,7 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="50dp">
+
         <Button
             android:id="@+id/librarybtn"
             android:layout_width="wrap_content"
@@ -21,7 +22,6 @@
             tools:layout_editor_absoluteX="4dp"
             tools:layout_editor_absoluteY="4dp"
             tools:text="Library" />
-
     </TableRow>
 
 
@@ -29,7 +29,6 @@
         android:id="@+id/song_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:text="SONG TITLE"
         android:textAlignment="center"
         android:textSize="12pt"
@@ -58,13 +57,9 @@
             android:textAlignment="center"
             android:textSize="8pt"
             app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
     </TableRow>
 
-
-
     <ImageView
-
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -76,7 +71,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <SeekBar
 
         android:layout_marginTop="10dp"
@@ -103,8 +97,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="240dp"
             android:text="-1:49" />
-
-
     </LinearLayout>
 
 
@@ -127,7 +119,6 @@
             app:layout_constraintEnd_toStartOf="@+id/playBtn"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="349dp" />
-
 
         <Button
             android:id="@+id/playBtn"
@@ -152,6 +143,19 @@
             app:layout_constraintStart_toEndOf="@+id/playBtn"
             tools:layout_editor_absoluteY="349dp" />
 
+        <Button
+            android:id="@+id/shuffleBtn"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/shuffle"
+            android:onClick="shuffleBtnClick"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/playBtn"
+            tools:layout_editor_absoluteY="349dp" />
     </TableRow>
 
     <LinearLayout
@@ -180,6 +184,5 @@
         android:id="@+id/song_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"></ListView>
-
 
 </LinearLayout>

@@ -152,8 +152,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     public void toNowPlaying (View view) {
         startActivity(new Intent(MainActivity.this, Playing.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
 

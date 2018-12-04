@@ -6,6 +6,8 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Build;
+import java.util.ArrayList;
+import java.util.Collections;
 import android.Manifest;
 
 import android.os.Handler;
@@ -72,7 +74,10 @@ public class Playing extends AppCompatActivity {
 
     Button nextBtn;
     Button prevBtn;
+    Button shuffleBtn;
 
+    SongAdapter songAdt;
+    ArrayList<Song> queue;
     private AudioManager audioManager;
 
     private boolean canChange = true;
@@ -94,6 +99,8 @@ public class Playing extends AppCompatActivity {
 
         nextBtn = (Button) findViewById(R.id.nextBtn);
         prevBtn = (Button) findViewById(R.id.prevBtn);
+
+        shuffleBtn = (Button) findViewById(R.id.shuffleBtn);
 
     }
 
@@ -240,12 +247,9 @@ public class Playing extends AppCompatActivity {
         }).start();
 
         songView = (ListView)findViewById(R.id.song_list);
-
-        ArrayList<Song> queue = musicSrv.getQueue();
-
-        SongAdapter songAdt = new SongAdapter(this, queue, "song");
+        queue = musicSrv.getQueue();
+        songAdt = new SongAdapter(this, queue, "song");
         songView.setAdapter(songAdt);
-
     }
 
 
@@ -350,10 +354,8 @@ public class Playing extends AppCompatActivity {
     }
 
     public void nextBtnClick(View view) {
-
         musicSrv.playNext();
         updateInfo();
-
     }
 
     public void prevBtnClick(View view) {
@@ -361,6 +363,10 @@ public class Playing extends AppCompatActivity {
         updateInfo();
     }
 
+    public void shuffleBtnClick(View view) {
+        Collections.shuffle(queue);
+        songAdt.notifyDataSetChanged();
+    }
 
     public void toLib(View view) {
         startActivity(new Intent(Playing.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
