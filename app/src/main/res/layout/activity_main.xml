@@ -8,6 +8,21 @@
     tools:context=".MainActivity"
     tools:layout_editor_absoluteY="81dp">
 
+
+    <TextView
+        android:id="@+id/sectionTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="TITLE"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/searchBar"
+        android:layout_marginBottom="20dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="118dp" />
+
+
     <Button
         android:id="@+id/songs"
         android:layout_width="match_parent"
@@ -15,8 +30,10 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="26dp"
         android:text="Songs"
+        android:onClick="toSongs"
         app:layout_constraintBottom_toTopOf="@+id/albums"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchBar"
         app:layout_constraintVertical_chainStyle="packed" />
@@ -28,6 +45,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:text="Artists"
+        android:onClick="toArtists"
         app:layout_constraintBottom_toTopOf="@+id/playlists"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,6 +58,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:text="Albums"
+        android:onClick="toAlbums"
         app:layout_constraintBottom_toTopOf="@+id/artists"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
