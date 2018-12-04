@@ -31,11 +31,13 @@ import wav.wav.MusicService.MusicBinder;
 
 
 import android.widget.MediaController.MediaPlayerControl;
+import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity {
 
     protected ArrayList<Song> songList;
+
     protected ListView songView;
 
     protected MusicService musicSrv;
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     protected MusicController controller;
 
     protected boolean paused=false, playbackPaused=false;
+
+    TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +80,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        SongAdapter songAdt = new SongAdapter(this, songList);
+        SongAdapter songAdt = new SongAdapter(this, songList, "song");
         songView.setAdapter(songAdt);
+
+        title = (TextView) findViewById(R.id.sectionTitle);
+
+        title.setText("SONG");
+
+
+
+
+
 
 
     }
@@ -160,7 +173,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void toArtists (View view) {
 
+
+        SongAdapter songAdt = new SongAdapter(this, songList, "artist");
+        songView.setAdapter(songAdt);
+
+        title = (TextView) findViewById(R.id.sectionTitle);
+
+        title.setText("Artists");
+
+
+    }
+
+    public void toAlbums (View view) {
+
+
+        SongAdapter songAdt = new SongAdapter(this, songList, "album");
+        songView.setAdapter(songAdt);
+
+        title = (TextView) findViewById(R.id.sectionTitle);
+
+        title.setText("Albums");
+
+
+    }
+
+
+    public void toSongs (View view) {
+
+
+        SongAdapter songAdt = new SongAdapter(this, songList, "song");
+        songView.setAdapter(songAdt);
+
+        title = (TextView) findViewById(R.id.sectionTitle);
+
+        title.setText("Songs");
+
+
+    }
 
 
 }
