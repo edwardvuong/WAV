@@ -50,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
     TextView title;
 
+    SongAdapter songAdt;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        SongAdapter songAdt = new SongAdapter(this, songList, "song");
+        songAdt = new SongAdapter(this, songList, "song");
         songView.setAdapter(songAdt);
 
         title = (TextView) findViewById(R.id.sectionTitle);
@@ -176,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
     public void toArtists (View view) {
 
 
-        SongAdapter songAdt = new SongAdapter(this, songList, "artist");
+        songAdt.setSection("artist");
         songView.setAdapter(songAdt);
 
         title = (TextView) findViewById(R.id.sectionTitle);
@@ -189,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
     public void toAlbums (View view) {
 
 
-        SongAdapter songAdt = new SongAdapter(this, songList, "album");
+        songAdt.setSection("album");
         songView.setAdapter(songAdt);
 
         title = (TextView) findViewById(R.id.sectionTitle);
@@ -203,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
     public void toSongs (View view) {
 
 
-        SongAdapter songAdt = new SongAdapter(this, songList, "song");
+        songAdt.setSection("song");
         songView.setAdapter(songAdt);
 
         title = (TextView) findViewById(R.id.sectionTitle);

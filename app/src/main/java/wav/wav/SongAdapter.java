@@ -22,6 +22,7 @@ public class SongAdapter extends BaseAdapter {
 
     ArrayList<String> albumList = new ArrayList<>();
     ArrayList<String> artistList = new ArrayList<>();
+    int count;
 
 
     private String section;
@@ -64,6 +65,7 @@ public class SongAdapter extends BaseAdapter {
            return songs.size();
        }
        else if (section =="album"){
+           count = 0;
            return albumList.size()/2;
        }
        else{
@@ -120,19 +122,19 @@ else if (section == "album" ){
         LinearLayout songLay = (LinearLayout) songInf.inflate
                 (R.layout.album, parent, false);
         //get title and artist views
-    if (position%2 == 0) {
+
 
         TextView songAlbum = (TextView) songLay.findViewById(R.id.song_album);
         ImageView albumArt = (ImageView) songLay.findViewById(R.id.album_art);
         //get song using position
-        String currAlbum = albumList.get(position);
-        String currAlbumArt = albumList.get(position + 1);
+        String currAlbum = albumList.get(position*2);
+        String currAlbumArt = albumList.get(position*2 + 1);
 
 
         //get title and artist strings
         songAlbum.setText(currAlbum);
         albumArt.setImageDrawable(Drawable.createFromPath(currAlbumArt));
-    }
+
         //set position as tag
         songLay.setTag(position);
         return songLay;
@@ -164,6 +166,13 @@ else{
 }
 
 
+
+    }
+
+
+    public void setSection(String newSection){
+
+        section = newSection;
 
     }
 
