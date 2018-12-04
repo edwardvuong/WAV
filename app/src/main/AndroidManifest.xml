@@ -26,8 +26,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
-            android:name="wav.wav.MainActivity"
+        <activity android:name=".DemoActivity">
+            android:name="wav.wav.DemoActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
@@ -47,6 +47,8 @@
         </activity>
 
         <service android:name="wav.wav.MusicService" />
+
+        <activity android:name=".MainActivity" />
 
     </application>
 
