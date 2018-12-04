@@ -88,4 +88,16 @@ public class Song implements Parcelable {
     public String toString(){
         return title;
     }
+
+
+    public Song searchID(String nid){
+
+        if(nid==String.valueOf(id)){
+            return this;
+        }
+        else return null;
+
+    }
+
+
 }

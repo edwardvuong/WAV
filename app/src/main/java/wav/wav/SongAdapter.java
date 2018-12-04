@@ -17,15 +17,17 @@ import 	android.view.ViewGroup;
 public class SongAdapter extends BaseAdapter {
 
     private ArrayList<Song> songs;
+    private ArrayList<Song> searchList;
     private LayoutInflater songInf;
 
 
     ArrayList<String> albumList = new ArrayList<>();
     ArrayList<String> artistList = new ArrayList<>();
-    int count;
 
 
     private String section;
+
+    private boolean search;
 
 
 //    public SongAdapter(Context c, ArrayList<Song> theSongs){
@@ -36,6 +38,11 @@ public class SongAdapter extends BaseAdapter {
 
     public SongAdapter(Context c, ArrayList<Song> theSongs, String newSection){
         songs=theSongs;
+
+        searchList = songs;
+
+        search = false;
+
         songInf=LayoutInflater.from(c);
         section = newSection;
 
@@ -57,10 +64,17 @@ public class SongAdapter extends BaseAdapter {
     public int getCount() {
         if (section == "song") {
 
-            return songs.size();
+            if(search == true) {
+
+
+                return searchList.size();
+            }
+            else{
+                return songs.size();
+            }
+
         }
         else if (section =="album"){
-            count = 0;
             return albumList.size()/2;
         }
         else{
@@ -91,10 +105,8 @@ public class SongAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
 
-        if (section == "song") {
+        if (section == "song" || search == true) {
 
-
-            System.out.println("SONGPOS: " + position);
 
             //map to song layout
             LinearLayout songLay = (LinearLayout) songInf.inflate
@@ -103,7 +115,16 @@ public class SongAdapter extends BaseAdapter {
             TextView songView = (TextView) songLay.findViewById(R.id.song_title);
             TextView artistView = (TextView) songLay.findViewById(R.id.song_artist);
             //get song using position
-            Song currSong = songs.get(position);
+
+            Song currSong;
+
+            if (search == true) {
+                currSong = searchList.get(position);
+            }
+            else{
+                currSong = songs.get(position);
+            }
+
             //get title and artist strings
             songView.setText(currSong.getTitle());
             artistView.setText(currSong.getArtist());
@@ -151,7 +172,20 @@ public class SongAdapter extends BaseAdapter {
             String currSong = artistList.get(position);
             //get title and artist strings
             songArtist.setText(currSong);
-            trackNums.setText("-1");
+            int count =0;
+            for (Song sng : songs){
+                if (sng.getArtist().equals(currSong)){
+                    count++;
+                }
+
+            }
+
+            if (count !=1) {
+                trackNums.setText(count + " Tracks");
+            } else{
+                trackNums.setText(count + " Track");
+            }
+
             //set position as tag
             songLay.setTag(position);
             return songLay;
@@ -159,4 +193,79 @@ public class SongAdapter extends BaseAdapter {
 
 
     }
+
+
+
+    public void search(String searchVal){
+
+       searchList=songs;
+
+       search = true;
+
+       ArrayList<Song> searchListTemp = new ArrayList<Song>();
+        System.out.println("SV: "+searchVal);
+       if (section == "album") {
+
+           for (Song sng : searchList) {
+
+               if(sng.getAlbum().equals(searchVal)){
+                   searchListTemp.add(sng);
+               }
+
+           }
+
+       }
+
+       else if(section == "artist"){
+
+           for (Song sng : searchList) {
+
+               if(sng.getArtist().equals(searchVal)){
+                   searchListTemp.add(sng);
+               }
+
+           }
+
+
+       }
+       else{
+
+
+
+           for (Song sng : searchList) {
+
+               if(sng.getArtist().contains(searchVal) || sng.getAlbum().contains(searchVal)){
+                   searchListTemp.add(sng);
+               }
+
+           }
+
+
+
+       }
+
+
+       searchList = searchListTemp;
+
+
+    }
+
+
+    public ArrayList<Song> retList() {
+
+    if (search == true){
+        return  searchList;
+    }
+    else{
+        return  songs;
+    }
+
+    }
+
+    public void clearSearch (){
+
+        search = false;
+
+    }
+
 }
