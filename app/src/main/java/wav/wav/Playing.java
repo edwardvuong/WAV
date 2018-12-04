@@ -231,7 +231,7 @@ public class Playing extends AppCompatActivity {
 
         ArrayList<Song> queue = musicSrv.getQueue();
 
-        SongAdapter songAdt = new SongAdapter(this, queue);
+        SongAdapter songAdt = new SongAdapter(this, queue, "song");
         songView.setAdapter(songAdt);
 
     }

@@ -37,7 +37,6 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     protected ArrayList<Song> songList;
-
     protected ListView songView;
 
     protected MusicService musicSrv;
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     TextView title;
 
     SongAdapter songAdt;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,17 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
         songAdt = new SongAdapter(this, songList, "song");
         songView.setAdapter(songAdt);
-
-        title = (TextView) findViewById(R.id.sectionTitle);
-
-        title.setText("SONG");
-
-
-
-
-
-
-
     }
 
 
@@ -136,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 songList.add(new Song(thisId, thisTitle, thisArtist, thisDuration, thisAlbum, getCoverArtPath(musicResolver, thisAlbumArtID)));
             }
             while (musicCursor.moveToNext());
+            musicCursor.close();;
         }
 
     }
@@ -159,10 +147,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void songPicked(View view){
-
      startActivity(new Intent(MainActivity.this, Playing.class).putExtra("SetSong", Integer.toString(Integer.parseInt(view.getTag().toString()))).putExtra("songList", songList));
-
-
 
     }
 
@@ -175,46 +160,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     public void toArtists (View view) {
-
-
         songAdt.setSection("artist");
         songView.setAdapter(songAdt);
-
         title = (TextView) findViewById(R.id.sectionTitle);
-
         title.setText("Artists");
-
-
     }
 
     public void toAlbums (View view) {
-
-
         songAdt.setSection("album");
         songView.setAdapter(songAdt);
-
         title = (TextView) findViewById(R.id.sectionTitle);
-
         title.setText("Albums");
-
-
     }
 
 
     public void toSongs (View view) {
-
-
         songAdt.setSection("song");
         songView.setAdapter(songAdt);
-
         title = (TextView) findViewById(R.id.sectionTitle);
-
         title.setText("Songs");
-
-
     }
-
 
 }
