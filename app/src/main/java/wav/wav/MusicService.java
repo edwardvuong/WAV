@@ -3,8 +3,8 @@ package wav.wav;
 import android.app.Service;
 
 
-
 import java.util.ArrayList;
+
 import android.content.ContentUris;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -16,9 +16,9 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import java.util.Random;
+
 import android.app.Notification;
 import android.app.PendingIntent;
-
 
 
 public class MusicService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
@@ -35,11 +35,11 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private final IBinder musicBind = new MusicBinder();
 
 
-    private String songTitle="";
-    private static final int NOTIFY_ID=1;
+    private String songTitle = "";
+    private static final int NOTIFY_ID = 1;
 
 
-    private boolean shuffle=false;
+    private boolean shuffle = false;
     private Random rand;
 
     @Override
@@ -49,31 +49,29 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
 
     @Override
-    public boolean onUnbind(Intent intent){
+    public boolean onUnbind(Intent intent) {
         player.stop();
         player.release();
         return false;
     }
 
 
-
-
-    public void onCreate(){
+    public void onCreate() {
         //create the service
         super.onCreate();
-    //initialize position
-        songPosn=0;
-    //create player
+        //initialize position
+        songPosn = 0;
+        //create player
         player = new MediaPlayer();
 
         initMusicPlayer();
 
-        rand=new Random();
+        rand = new Random();
 
 
     }
 
-    public void initMusicPlayer(){
+    public void initMusicPlayer() {
         //set player properties
 
         player.setWakeMode(getApplicationContext(),
@@ -86,8 +84,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
 
-    public void setList(ArrayList<Song> theSongs){
-        songs=theSongs;
+    public void setList(ArrayList<Song> theSongs) {
+        songs = theSongs;
     }
 
     @Override
@@ -106,7 +104,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
     }
 
-    public void playSong(){
+    public void playSong() {
         //play a song
 
         player.reset();
@@ -115,7 +113,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         Song playSong = songs.get(songPosn);
 
 
-        songTitle=playSong.getTitle();
+        songTitle = playSong.getTitle();
 
 //get id
         long currSong = playSong.getID();
@@ -125,16 +123,13 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
                 currSong);
 
 
-        try{
+        try {
             player.setDataSource(getApplicationContext(), trackUri);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             Log.e("MUSIC SERVICE", "Error setting data source", e);
         }
 
         player.prepareAsync();
-
-
 
 
     }
@@ -153,81 +148,85 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
 //        Notification.Builder builder = new Notification.Builder(this);
 
-  //      builder.setContentIntent(pendInt)
-    //            .setSmallIcon(R.drawable.play)
-      //          .setTicker(songTitle)
+        //      builder.setContentIntent(pendInt)
+        //            .setSmallIcon(R.drawable.play)
+        //          .setTicker(songTitle)
         //        .setOngoing(true)
-          //      .setContentTitle("Playing")
- // .setContentText(songTitle);
-   //     Notification not = builder.build();
+        //      .setContentTitle("Playing")
+        // .setContentText(songTitle);
+        //     Notification not = builder.build();
 
-     //   startForeground(NOTIFY_ID, not);
+        //   startForeground(NOTIFY_ID, not);
 
 
     }
 
 
-    public void setSong(int songIndex){
-        songPosn=songIndex;
+    public void setSong(int songIndex) {
+        songPosn = songIndex;
     }
 
 
-
-    public int getPosn(){
+    public int getPosn() {
         return player.getCurrentPosition();
     }
 
-    public int getDur(){
+    public int getDur() {
 
 
         return songs.get(songPosn).getDuration();
     }
 
 
-    public String getSongTitle(){
+    public String getSongTitle() {
         return songs.get(songPosn).getTitle();
     }
 
-    public String getSongArtist(){return  songs.get(songPosn).getArtist();}
+    public String getSongArtist() {
+        return songs.get(songPosn).getArtist();
+    }
 
-    public String getSongAlbum(){return  songs.get(songPosn).getAlbum();}
+    public String getSongAlbum() {
+        return songs.get(songPosn).getAlbum();
+    }
 
-    public String getSongAlbumArtId(){return songs.get(songPosn).getAlbumArtID();}
+    public String getSongAlbumArtId() {
+        return songs.get(songPosn).getAlbumArtID();
+    }
 
-    public boolean isPng(){
+    public boolean isPng() {
         return player.isPlaying();
     }
 
-    public void pausePlayer(){
+    public void pausePlayer() {
         player.pause();
     }
 
-    public void seek(int posn){
+    public void seek(int posn) {
         player.seekTo(posn);
     }
 
-    public void go(){
+    public void go() {
         player.start();
     }
 
-    public void playPrev(){
+    public void playPrev() {
         songPosn--;
-        if(songPosn<0) songPosn=songs.size()-1;
+        if (songPosn < 0) songPosn = songs.size() - 1;
         playSong();
     }
 
     //skip to next
-    public void playNext(){
-        if(shuffle){
+    public void playNext() {
+        if (shuffle) {
             int newSong = songPosn;
-            while(newSong==songPosn){
-                newSong=rand.nextInt(songs.size());
+            while (newSong == songPosn) {
+                newSong = rand.nextInt(songs.size());
             }
-            songPosn=newSong;
-        }
-        else{
+            songPosn = newSong;
+        } else {
             songPosn++;
-            if(songPosn>=songs.size()) songPosn=0;
+            if (songPosn >= songs.size()) songPosn = 0;
         }
         playSong();
     }
@@ -239,8 +238,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
 
-    public void setShuffle(){
-        if(shuffle) shuffle=false;
-        else shuffle=true;
+    public void setShuffle() {
+        if (shuffle) shuffle = false;
+        else shuffle = true;
     }
 }

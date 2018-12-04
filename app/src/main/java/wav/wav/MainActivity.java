@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
 
         SongAdapter songAdt = new SongAdapter(this, songList);
         songView.setAdapter(songAdt);
-
-
     }
 
 
@@ -120,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 songList.add(new Song(thisId, thisTitle, thisArtist, thisDuration, thisAlbum, getCoverArtPath(musicResolver, thisAlbumArtID)));
             }
             while (musicCursor.moveToNext());
+            musicCursor.close();;
         }
 
     }
@@ -145,8 +144,6 @@ public class MainActivity extends AppCompatActivity {
     public void songPicked(View view){
 
      startActivity(new Intent(MainActivity.this, Playing.class).putExtra("SetSong", Integer.toString(Integer.parseInt(view.getTag().toString()))).putExtra("songList", songList));
-
-
 
     }
 

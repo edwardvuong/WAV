@@ -5,7 +5,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import 	android.Manifest;
+import android.Manifest;
 
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +18,7 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
 import android.net.Uri;
 import android.content.ContentResolver;
 import android.database.Cursor;
@@ -39,7 +40,6 @@ import android.widget.TextView;
 import wav.wav.MusicService.MusicBinder;
 
 
-
 public class Playing extends AppCompatActivity {
 
     protected ArrayList<Song> songList;
@@ -47,20 +47,16 @@ public class Playing extends AppCompatActivity {
 
     protected MusicService musicSrv;
     protected Intent playIntent;
-    protected boolean musicBound=false;
+    protected boolean musicBound = false;
 
 
     TextView songTitle;
-
     TextView songAlbum;
     TextView songArtist;
-
     ImageView albumArt;
-
     Button libBtn;
 
-    protected boolean paused=false, playbackPaused=false;
-
+    protected boolean paused = false, playbackPaused = false;
 
 
     Button playBtn;
@@ -87,29 +83,26 @@ public class Playing extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player);
 
-    songList = getIntent().getParcelableArrayListExtra("songList");
+        songList = getIntent().getParcelableArrayListExtra("songList");
 
 
         playBtn = (Button) findViewById(R.id.playBtn);
-       // loopBtn= (Button) findViewById(R.id.loopBtn);
+        // loopBtn= (Button) findViewById(R.id.loopBtn);
         elapsedTimeLabel = (TextView) findViewById(R.id.elapsedTimeLabel);
         remainingTimeLabel = (TextView) findViewById(R.id.remainingTimeLabel);
 
         nextBtn = (Button) findViewById(R.id.nextBtn);
         prevBtn = (Button) findViewById(R.id.prevBtn);
 
-
-
-
     }
 
 
     //connect to the service
-    protected ServiceConnection musicConnection = new ServiceConnection(){
+    protected ServiceConnection musicConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            MusicBinder binder = (MusicBinder)service;
+            MusicBinder binder = (MusicBinder) service;
             //get service
             musicSrv = binder.getService();
             //pass list
@@ -125,10 +118,6 @@ public class Playing extends AppCompatActivity {
         }
 
 
-
-
-
-
         @Override
         public void onServiceDisconnected(ComponentName name) {
             musicBound = false;
@@ -136,13 +125,12 @@ public class Playing extends AppCompatActivity {
     };
 
 
-
-    public void updateInfo(){
+    public void updateInfo() {
 
         //mp.setVolume(0.5f, 0.5f);
         totalTime = musicSrv.getDur();
 
-        songTitle = (TextView) findViewById(R.id.song_title) ;
+        songTitle = (TextView) findViewById(R.id.song_title);
         songAlbum = (TextView) findViewById(R.id.song_album);
         songArtist = (TextView) findViewById(R.id.song_artist);
 
@@ -152,7 +140,7 @@ public class Playing extends AppCompatActivity {
         songTitle.setText(musicSrv.getSongTitle());
 
         songAlbum.setText(musicSrv.getSongAlbum());
-        songArtist.setText(musicSrv.getSongArtist()+" ― ");
+        songArtist.setText(musicSrv.getSongArtist() + " ― ");
 
         albumArt.setImageDrawable(Drawable.createFromPath(musicSrv.getSongAlbumArtId()));
         albumArt.setMinimumWidth(500);
@@ -164,7 +152,7 @@ public class Playing extends AppCompatActivity {
         // Position Bar
         positionBar = (SeekBar) findViewById(R.id.positionBar);
         positionBar.setMax(totalTime);
-        System.out.println("MAX: "+positionBar.getMax());
+        System.out.println("MAX: " + positionBar.getMax());
         positionBar.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener() {
                     @Override
@@ -179,22 +167,21 @@ public class Playing extends AppCompatActivity {
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {
 
-                        if(musicSrv.isPng()){
+                        if (musicSrv.isPng()) {
                             wasPlaying = true;
-                        }
-                        else{
+                        } else {
                             wasPlaying = false;
                         }
 
-                        canChange=false;
+                        canChange = false;
                         musicSrv.pausePlayer();
                     }
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
-                        canChange =true;
+                        canChange = true;
 
-                        if(wasPlaying) {
+                        if (wasPlaying) {
                             musicSrv.go();
                         }
 
@@ -236,13 +223,13 @@ public class Playing extends AppCompatActivity {
                         msg.what = musicSrv.getPosn();
                         handler.sendMessage(msg);
                         Thread.sleep(1000);
-                    } catch (InterruptedException e) {}
+                    } catch (InterruptedException e) {
+                    }
                 }
             }
         }).start();
 
     }
-
 
 
     private Handler handler = new Handler() {
@@ -256,10 +243,10 @@ public class Playing extends AppCompatActivity {
             String elapsedTime = createTimeLabel(currentPosition);
             elapsedTimeLabel.setText(elapsedTime);
 
-            String remainingTime = createTimeLabel(totalTime-currentPosition);
+            String remainingTime = createTimeLabel(totalTime - currentPosition);
             remainingTimeLabel.setText("- " + remainingTime);
 
-            if (totalTime-currentPosition <=0 && canChange == true ){
+            if (totalTime - currentPosition <= 0 && canChange == true) {
                 musicSrv.playNext();
                 updateInfo();
             }
@@ -280,11 +267,10 @@ public class Playing extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onStart() {
         super.onStart();
-        if(playIntent==null){
+        if (playIntent == null) {
             playIntent = new Intent(this, MusicService.class);
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
             startService(playIntent);
@@ -293,64 +279,50 @@ public class Playing extends AppCompatActivity {
     }
 
 
-    public void playSong (){
+    public void playSong() {
         String s = getIntent().getStringExtra("SetSong");
         musicSrv.setSong(Integer.parseInt(s));
         musicSrv.playSong();
 
         playBtn.setBackgroundResource(R.drawable.pause);
 
-        System.out.println("DURATION: "+musicSrv.getDur());
+        System.out.println("DURATION: " + musicSrv.getDur());
 
 
     }
-
 
 
     @Override
     protected void onDestroy() {
         stopService(playIntent);
-        musicSrv=null;
+        musicSrv = null;
         super.onDestroy();
     }
 
 
-
-  //  @Override
-   // public boolean onOptionsItemSelected(MenuItem item) {
-     //   switch (item.getItemId()) {
-       //     case R.id.loopBtn:
-         //       musicSrv.setShuffle();
-           //     break;
-       // }
-       // return false;
-   // }
+    //  @Override
+    // public boolean onOptionsItemSelected(MenuItem item) {
+    //   switch (item.getItemId()) {
+    //     case R.id.loopBtn:
+    //       musicSrv.setShuffle();
+    //     break;
+    // }
+    // return false;
+    // }
 
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
-        paused=true;
+        paused = true;
     }
 
 
-
-
-
-
     public void playBtnClick(View view) {
-
         if (!musicSrv.isPng()) {
             // Stopping
-
-
             playBtn.setBackgroundResource(R.drawable.pause);
-
             musicSrv.go();
-
-
-
-
         } else {
             // Playing
             musicSrv.pausePlayer();
@@ -361,28 +333,25 @@ public class Playing extends AppCompatActivity {
     }
 
 
-    public void nextBtnClick(View view){
+    public void nextBtnClick(View view) {
 
         musicSrv.playNext();
         updateInfo();
 
     }
 
-    public void prevBtnClick(View view){
+    public void prevBtnClick(View view) {
         musicSrv.playPrev();
         updateInfo();
     }
 
 
-
-
-    public void toLib(View view){
+    public void toLib(View view) {
 
         startActivity(new Intent(Playing.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
 
 
     }
-
 
 
 }

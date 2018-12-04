@@ -19,8 +19,6 @@
 
     <application
 
-
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -28,14 +26,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
-
+        <activity android:name=".Library">
             android:name="wav.wav.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
-
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,19 +38,13 @@
             </intent-filter>
         </activity>
 
-
-
         <activity android:name=".Playing">
-
             android:name="wav.wav.Playing"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:noHistory = "false"
             android:screenOrientation="portrait" >
         </activity>
-
-
-
 
         <service android:name="wav.wav.MusicService" />
 

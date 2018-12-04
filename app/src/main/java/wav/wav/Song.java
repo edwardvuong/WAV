@@ -3,22 +3,22 @@ package wav.wav;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Song implements Parcelable{
+public class Song implements Parcelable {
 
     private long id;
     private String title;
     private String artist;
     private String album;
 
-    private  int duration;
+    private int duration;
 
     private String albumArtID;
 
 
     public Song(long songID, String songTitle, String songArtist, int songDuration, String songAlbum, String songAlbumArtID) {
-        id=songID;
-        title=songTitle;
-        artist=songArtist;
+        id = songID;
+        title = songTitle;
+        artist = songArtist;
         duration = songDuration;
         album = songAlbum;
         albumArtID = songAlbumArtID;
@@ -46,12 +46,29 @@ public class Song implements Parcelable{
         }
     };
 
-    public long getID(){return id;} //CAN ADD MORE VARIABLES
-    public String getTitle(){return title;}
-    public String getArtist(){return artist;}
-    public  int getDuration() {return duration;}
-    public String getAlbum(){return album;}
-    public String getAlbumArtID(){return albumArtID;};
+    public long getID() {
+        return id;
+    } //CAN ADD MORE VARIABLES
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public String getAlbumArtID() {
+        return albumArtID;
+    }
 
     @Override
     public int describeContents() {
