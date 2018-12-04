@@ -1,13 +1,9 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
-=======
->>>>>>> c341adcfb534e1de48ad1c19c0fe388cd161b9f9
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:onClick="songPicked"
-<<<<<<< HEAD
     android:orientation="vertical"
     android:padding="5dp" >
 
@@ -20,25 +16,3 @@
         android:textStyle="bold" />
 
 </LinearLayout>
-=======
-    android:orientation="horizontal"
-    android:padding="10dp" >
-
-    <TextView
-        android:id="@+id/song_album"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:textColor="#FFFFFF99"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="SONGALBUM"
-        />
-
-    <ImageView
-        android:id="@+id/album_art"
-        android:layout_width="wrap_content"
-        android:src="@drawable/image"
-        android:layout_height="fill_parent" />
-
-</LinearLayout>
->>>>>>> c341adcfb534e1de48ad1c19c0fe388cd161b9f9
