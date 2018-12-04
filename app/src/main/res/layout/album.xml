@@ -19,7 +19,7 @@
         android:id="@+id/song_album"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF99"
+        android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/album_art"

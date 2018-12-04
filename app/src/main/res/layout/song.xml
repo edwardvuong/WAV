@@ -8,7 +8,9 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
     android:clickable="true"
+
     android:onClick="songPicked"
+
     android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical" >
 
