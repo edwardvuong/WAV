@@ -448,7 +448,7 @@ public class Wav extends AppCompatActivity {
 
             //  playSong();
 
-            updateInfo();
+           // updateInfo();
 
         }
 
@@ -486,6 +486,12 @@ public class Wav extends AppCompatActivity {
         });
 
 
+        if(musicSrv.isPng()) {
+            playBtn.setBackgroundResource(R.drawable.play);
+        }
+        else{
+            playBtn.setBackgroundResource(R.drawable.pause);
+        }
         TextView a = (TextView) findViewById(R.id.barSong);
         a.setText(musicSrv.getSongTitle());
 
@@ -665,7 +671,7 @@ public class Wav extends AppCompatActivity {
 
     public void shuffleBtnClick(View view) {
         Collections.shuffle(queue);
-        songAdt.notifyDataSetChanged();
+        queueAdt.notifyDataSetChanged();
     }
 
 }
