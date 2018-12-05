@@ -145,8 +145,11 @@ public class DemoActivity extends AppCompatActivity {
     TextView title;
 
     SongAdapter songAdt;
-
     SongAdapter queueAdt;
+
+    protected  ListView queueView;
+
+
 
     SearchView srch;
 
@@ -671,10 +674,10 @@ public class DemoActivity extends AppCompatActivity {
             }
         }).start();
 
-        songView = (ListView) findViewById(R.id.list);
+        queueView = (ListView) findViewById(R.id.list);
         queue = musicSrv.getQueue();
         queueAdt = new SongAdapter(this, queue, "song");
-        songView.setAdapter(queueAdt);
+        queueView.setAdapter(queueAdt);
     }
 
 
