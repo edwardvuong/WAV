@@ -146,6 +146,8 @@ public class DemoActivity extends AppCompatActivity {
 
     SongAdapter songAdt;
 
+    SongAdapter queueAdt;
+
     SearchView srch;
 
     /**
@@ -669,10 +671,10 @@ public class DemoActivity extends AppCompatActivity {
             }
         }).start();
 
-        songView = (ListView) findViewById(R.id.song_list);
+        songView = (ListView) findViewById(R.id.list);
         queue = musicSrv.getQueue();
-        songAdt = new SongAdapter(this, queue, "song");
-        songView.setAdapter(songAdt);
+        queueAdt = new SongAdapter(this, queue, "song");
+        songView.setAdapter(queueAdt);
     }
 
 
