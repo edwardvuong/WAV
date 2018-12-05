@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -145,6 +146,7 @@ public class DemoActivity extends AppCompatActivity {
 
     SongAdapter songAdt;
 
+    SearchView srch;
 
     /**
      * PLAYER
@@ -197,6 +199,9 @@ public class DemoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_demo);
 
 //        setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
+
+        srch = (SearchView) findViewById(R.id.searchBar);
+
 
         ListView lv = (ListView) findViewById(R.id.list);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -779,5 +784,47 @@ public class DemoActivity extends AppCompatActivity {
         Collections.shuffle(queue);
         songAdt.notifyDataSetChanged();
     }
+
+
+    public void inputSearch(View view){
+
+
+        System.out.println("TEST");
+
+
+        srch.setActivated(true);
+        srch.setQueryHint("SearchTest");
+        srch.onActionViewExpanded();
+        srch.setIconified(false);
+        srch.clearFocus();
+
+        srch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                System.out.println("QUERY: "+query);
+
+                songAdt.setSection("song");
+                songAdt.search(query);
+
+
+                songView.setAdapter(songAdt);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                    System.out.println("NEWTEXT: "+newText);
+
+                return false;
+
+            }
+
+        });
+    }
+
+
 
 }

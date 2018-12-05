@@ -234,7 +234,7 @@ public class SongAdapter extends BaseAdapter {
 
            for (Song sng : searchList) {
 
-               if(sng.getArtist().contains(searchVal) || sng.getAlbum().contains(searchVal)){
+               if(sng.getArtist().toLowerCase().contains(searchVal.toLowerCase()) || sng.getAlbum().toLowerCase().contains(searchVal.toLowerCase()) || sng.getTitle().toLowerCase().contains(searchVal.toLowerCase())){
                    searchListTemp.add(sng);
                }
 
