@@ -231,7 +231,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     public ArrayList<Song> getQueue(){
         ArrayList<Song> queue = new ArrayList();
-        for(int i = songPosn; i < songs.size(); i++)
+        for(int i = songPosn+1; i < songs.size(); i++)
             queue.add(songs.get(i));
         return queue;
     }
@@ -246,5 +246,19 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void setShuffle() {
         if (shuffle) shuffle = false;
         else shuffle = true;
+    }
+
+
+    public void setLoop(){
+
+        if (player.isLooping() == true) {
+            player.setLooping(false);
+            System.out.println("NOTLOOP");
+        }
+        else{
+            player.setLooping(true);
+            System.out.println("LOOPLOOP");
+        }
+
     }
 }

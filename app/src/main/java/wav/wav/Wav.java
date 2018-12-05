@@ -110,6 +110,9 @@ public class Wav extends AppCompatActivity {
     Button prevBtn;
     Button shuffleBtn;
 
+
+
+
     ArrayList<Song> queue;
     private AudioManager audioManager;
     private boolean canChange = true;
@@ -167,17 +170,6 @@ public class Wav extends AppCompatActivity {
 
         TextView t = (TextView) findViewById(R.id.name);
         t.setText(Html.fromHtml(getString(R.string.hello)));
-        Button f = (Button) findViewById(R.id.follow);
-        f.setText(Html.fromHtml(getString(R.string.follow)));
-        f.setMovementMethod(LinkMovementMethod.getInstance());
-        f.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("http://www.twitter.com/umanoapp"));
-                startActivity(i);
-            }
-        });
 
         /**
          * LIBRARY
@@ -385,7 +377,13 @@ public class Wav extends AppCompatActivity {
     }
 
     public void songPicked(View view) {
-        startActivity(new Intent(Wav.this, Wav.class).setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT).putExtra("SetSong", Integer.toString(Integer.parseInt(view.getTag().toString()))).putExtra("songList", songList));
+
+        System.out.println(Integer.parseInt(view.getTag().toString()));
+    musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
+        musicSrv.playSong();
+
+        updateInfo();
+
         if (mLayout != null) {
             if (mLayout.getAnchorPoint() == 1.0f) {
                 mLayout.setAnchorPoint(0.7f);
@@ -395,6 +393,8 @@ public class Wav extends AppCompatActivity {
                 mLayout.setPanelState(PanelState.COLLAPSED);
             }
         }
+        System.out.println("SONGPICKED");
+
     }
 
 
@@ -470,9 +470,9 @@ public class Wav extends AppCompatActivity {
     public void updateInfo() {
 
         totalTime = musicSrv.getDur();
-        songTitle = (TextView) findViewById(R.id.song_title);
-        songAlbum = (TextView) findViewById(R.id.song_album);
-        songArtist = (TextView) findViewById(R.id.song_artist);
+        songTitle = (TextView) findViewById(R.id.sTitle);
+        songAlbum = (TextView) findViewById(R.id.sAlbum);
+        songArtist = (TextView) findViewById(R.id.sArtist);
         albumArt = (ImageView) findViewById(R.id.imageView3);
         songTitle.setText(musicSrv.getSongTitle());
         songAlbum.setText(musicSrv.getSongAlbum());
@@ -483,6 +483,19 @@ public class Wav extends AppCompatActivity {
         albumArt.setMinimumHeight(500);
         albumArt.setMaxHeight(500);
         albumArt.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+        albumArt.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                musicSrv.setLoop();
+
+            }
+        });
+
+
+        TextView t = (TextView) findViewById(R.id.name);
+
+        t.setText(musicSrv.getSongTitle());
 
         // Position Bar
         positionBar = (SeekBar) findViewById(R.id.positionBar);

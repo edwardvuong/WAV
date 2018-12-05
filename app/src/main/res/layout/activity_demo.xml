@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/mount"
+
     android:gravity="bottom"
     tools:context=".Wav"
     sothree:umanoPanelHeight="68dp"
@@ -91,7 +92,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 app:layout_constraintBottom_toTopOf="@id/searchBar"
+
                 android:src="@drawable/wav"/>
+
                 tools:layout_editor_absoluteY="160dp">
 
                 <ListView
@@ -132,18 +135,18 @@
                 android:textSize="14sp" />
 
             <Button
-                android:id="@+id/follow"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical|right"
+                android:id="@+id/secondPlay"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:textSize="14sp" />
+                android:background="@drawable/play" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/song_title"
+            android:id="@+id/sTitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="SONG TITLE"
@@ -160,7 +163,7 @@
             android:layout_gravity="center">
 
             <TextView
-                android:id="@+id/song_artist"
+                android:id="@+id/sArtist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -171,7 +174,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
             <TextView
-                android:id="@+id/song_album"
+                android:id="@+id/sAlbum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -189,6 +192,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
+
             android:src="@drawable/image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
