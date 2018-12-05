@@ -14,8 +14,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,8 +55,6 @@ import android.os.Message;
 import android.widget.ImageView;
 
 import android.widget.SeekBar;
-
-import wav.wav.MusicService.MusicBinder;
 
 public class Wav extends AppCompatActivity {
     private static final String TAG = "DemoActivity";
@@ -121,7 +117,7 @@ public class Wav extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo);
+        setContentView(R.layout.wav_activity);
 
         srch = (SearchView) findViewById(R.id.searchBar);
 
@@ -167,9 +163,6 @@ public class Wav extends AppCompatActivity {
                 mLayout.setPanelState(PanelState.COLLAPSED);
             }
         });
-
-        TextView t = (TextView) findViewById(R.id.name);
-        t.setText(Html.fromHtml(getString(R.string.hello)));
 
         /**
          * LIBRARY
@@ -493,9 +486,11 @@ public class Wav extends AppCompatActivity {
         });
 
 
-        TextView t = (TextView) findViewById(R.id.name);
+        TextView a = (TextView) findViewById(R.id.barSong);
+        a.setText(musicSrv.getSongTitle());
 
-        t.setText(musicSrv.getSongTitle());
+        TextView t = (TextView) findViewById(R.id.barArtist);
+        t.setText(musicSrv.getSongArtist());
 
         // Position Bar
         positionBar = (SeekBar) findViewById(R.id.positionBar);
