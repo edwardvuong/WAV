@@ -385,7 +385,7 @@ public class Wav extends AppCompatActivity {
 
         if (mLayout != null) {
             if (mLayout.getAnchorPoint() == 1.0f) {
-                mLayout.setAnchorPoint(0.7f);
+                mLayout.setAnchorPoint(0.0f);
                 mLayout.setPanelState(PanelState.ANCHORED);
             } else {
                 mLayout.setAnchorPoint(1.0f);
@@ -421,6 +421,7 @@ public class Wav extends AppCompatActivity {
         srch.onActionViewExpanded();
         srch.setIconified(false);
         srch.clearFocus();
+        srch.setQueryHint("Search Library: ");
         srch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -496,6 +497,13 @@ public class Wav extends AppCompatActivity {
             TextView t = (TextView) findViewById(R.id.barArtist);
             t.setText(musicSrv.getSongArtist());
 
+            if (musicSrv.isPng()) {
+                playBtn.setBackgroundResource(R.drawable.play);
+
+            } else {
+                playBtn.setBackgroundResource(R.drawable.pause);
+
+            }
 
         }
 
@@ -513,13 +521,7 @@ public class Wav extends AppCompatActivity {
         });
 
 
-        if (musicSrv.isPng()) {
-            playBtn.setBackgroundResource(R.drawable.play);
 
-        } else {
-            playBtn.setBackgroundResource(R.drawable.pause);
-
-        }
 
 
         // Position Bar
@@ -731,7 +733,7 @@ public class Wav extends AppCompatActivity {
 
         musicSrv.setShuffle();
         if (musicSrv.getShufle() == true) {
-            btn.setBackgroundResource(R.drawable.shuffle);
+            btn.setBackgroundResource(R.drawable.shuffleclick);
         } else {
             btn.setBackgroundResource(R.drawable.shuffle);
         }

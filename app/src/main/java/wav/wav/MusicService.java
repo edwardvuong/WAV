@@ -270,6 +270,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         if (shuffle == false) {
             Collections.shuffle(songs);
             shuffle = true;
+            songPosn = 0;
         } else {
 
 
@@ -277,7 +278,6 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             Song temp = songs.get(songPosn);
             int count = 0;
             Collections.sort(songs);
-            songPosn = 1;
 
             for (Song sng : songs) {
                 if (sng.getID() == temp.getID()) {
