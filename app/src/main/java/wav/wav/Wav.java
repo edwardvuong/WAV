@@ -112,6 +112,7 @@ public class Wav extends AppCompatActivity {
     private AudioManager audioManager;
     private boolean canChange = true;
     private boolean wasPlaying = false;
+    private boolean justShuff = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -372,7 +373,13 @@ public class Wav extends AppCompatActivity {
 
 
         musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
-        musicSrv.setList(songAdt.retList());
+
+        if (view.getParent() == queueView) {
+
+            musicSrv.setList(queueAdt.retList());
+        } else {
+            musicSrv.setList(songAdt.retList());
+        }
         musicSrv.playSong();
 
 
@@ -419,6 +426,10 @@ public class Wav extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
 
 
+                songAdt.clearSearch();
+                songAdt.setSection("song");
+                songView.setAdapter(songAdt);
+
                 songAdt.search(query);
                 songView.setAdapter(songAdt);
                 return false;
@@ -459,21 +470,37 @@ public class Wav extends AppCompatActivity {
 
 
     public void updateInfo() {
-        totalTime = musicSrv.getDur();
 
-        songTitle = (TextView) findViewById(R.id.sTitle);
-        songAlbum = (TextView) findViewById(R.id.sAlbum);
-        songArtist = (TextView) findViewById(R.id.sArtist);
-        albumArt = (ImageView) findViewById(R.id.imageView3);
-        songTitle.setText(musicSrv.getSongTitle());
-        songAlbum.setText(musicSrv.getSongAlbum());
-        songArtist.setText(musicSrv.getSongArtist() + " ― ");
-        albumArt.setImageDrawable(Drawable.createFromPath(musicSrv.getSongAlbumArtId()));
-        albumArt.setMinimumWidth(500);
-        albumArt.setMaxWidth(500);
-        albumArt.setMinimumHeight(500);
-        albumArt.setMaxHeight(500);
-        albumArt.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+        if (justShuff == false) {
+
+            totalTime = musicSrv.getDur();
+
+            songTitle = (TextView) findViewById(R.id.sTitle);
+            songAlbum = (TextView) findViewById(R.id.sAlbum);
+            songArtist = (TextView) findViewById(R.id.sArtist);
+            albumArt = (ImageView) findViewById(R.id.imageView3);
+            songTitle.setText(musicSrv.getSongTitle());
+            songAlbum.setText(musicSrv.getSongAlbum());
+            songArtist.setText(musicSrv.getSongArtist() + " ― ");
+            albumArt.setImageDrawable(Drawable.createFromPath(musicSrv.getSongAlbumArtId()));
+            albumArt.setMinimumWidth(500);
+            albumArt.setMaxWidth(500);
+            albumArt.setMinimumHeight(500);
+            albumArt.setMaxHeight(500);
+            albumArt.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            TextView a = (TextView) findViewById(R.id.barSong);
+            a.setText(musicSrv.getSongTitle());
+
+
+            TextView t = (TextView) findViewById(R.id.barArtist);
+            t.setText(musicSrv.getSongArtist());
+
+
+        }
+
+
+        justShuff = false;
 
         albumArt.setOnClickListener(new OnClickListener() {
 
@@ -493,14 +520,6 @@ public class Wav extends AppCompatActivity {
             playBtn.setBackgroundResource(R.drawable.pause);
 
         }
-
-
-        TextView a = (TextView) findViewById(R.id.barSong);
-        a.setText(musicSrv.getSongTitle());
-
-
-        TextView t = (TextView) findViewById(R.id.barArtist);
-        t.setText(musicSrv.getSongArtist());
 
 
         // Position Bar
@@ -603,6 +622,7 @@ public class Wav extends AppCompatActivity {
 
         queue = musicSrv.getQueue();
         queueAdt = new SongAdapter(this, queue, "song");
+
 
         queueView.setAdapter(queueAdt);
 
@@ -715,7 +735,10 @@ public class Wav extends AppCompatActivity {
         } else {
             btn.setBackgroundResource(R.drawable.shuffle);
         }
-        queueAdt.notifyDataSetChanged();
+        justShuff = true;
+        updateInfo();
+
+
     }
 
 }
