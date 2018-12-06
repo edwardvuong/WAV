@@ -1,5 +1,6 @@
 package wav.wav;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -70,7 +71,7 @@ public class Wav extends AppCompatActivity {
     protected MusicService musicSrv;
     protected Intent playIntent;
     protected boolean musicBound = false;
-    protected MusicController controller;
+
     protected boolean paused = false, playbackPaused = false;
     TextView title;
     SongAdapter songAdt;
@@ -105,8 +106,6 @@ public class Wav extends AppCompatActivity {
     Button nextBtn;
     Button prevBtn;
     Button shuffleBtn;
-
-
 
 
     ArrayList<Song> queue;
@@ -371,11 +370,11 @@ public class Wav extends AppCompatActivity {
 
     public void songPicked(View view) {
 
-        System.out.println(Integer.parseInt(view.getTag().toString()));
-    musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
+
+        musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
+        musicSrv.setList(songAdt.retList());
         musicSrv.playSong();
 
-        updateInfo();
 
         if (mLayout != null) {
             if (mLayout.getAnchorPoint() == 1.0f) {
@@ -386,7 +385,9 @@ public class Wav extends AppCompatActivity {
                 mLayout.setPanelState(PanelState.COLLAPSED);
             }
         }
-        System.out.println("SONGPICKED");
+
+
+        updateInfo();
 
     }
 
@@ -407,17 +408,17 @@ public class Wav extends AppCompatActivity {
     }
 
     public void inputSearch(View view) {
-        System.out.println("TEST");
+
         srch.setActivated(true);
-        srch.setQueryHint("SearchTest");
+
         srch.onActionViewExpanded();
         srch.setIconified(false);
         srch.clearFocus();
         srch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                System.out.println("QUERY: " + query);
-                songAdt.setSection("song");
+
+
                 songAdt.search(query);
                 songView.setAdapter(songAdt);
                 return false;
@@ -425,7 +426,7 @@ public class Wav extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                System.out.println("NEWTEXT: " + newText);
+
                 return false;
             }
 
@@ -446,9 +447,6 @@ public class Wav extends AppCompatActivity {
             musicSrv.setList(songList);
             musicBound = true;
 
-            //  playSong();
-
-           // updateInfo();
 
         }
 
@@ -461,8 +459,8 @@ public class Wav extends AppCompatActivity {
 
 
     public void updateInfo() {
-
         totalTime = musicSrv.getDur();
+
         songTitle = (TextView) findViewById(R.id.sTitle);
         songAlbum = (TextView) findViewById(R.id.sAlbum);
         songArtist = (TextView) findViewById(R.id.sArtist);
@@ -478,7 +476,9 @@ public class Wav extends AppCompatActivity {
         albumArt.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
         albumArt.setOnClickListener(new OnClickListener() {
+
             @Override
+
             public void onClick(View v) {
                 musicSrv.setLoop();
 
@@ -486,22 +486,26 @@ public class Wav extends AppCompatActivity {
         });
 
 
-        if(musicSrv.isPng()) {
+        if (musicSrv.isPng()) {
             playBtn.setBackgroundResource(R.drawable.play);
-        }
-        else{
+
+        } else {
             playBtn.setBackgroundResource(R.drawable.pause);
+
         }
+
+
         TextView a = (TextView) findViewById(R.id.barSong);
         a.setText(musicSrv.getSongTitle());
+
 
         TextView t = (TextView) findViewById(R.id.barArtist);
         t.setText(musicSrv.getSongArtist());
 
+
         // Position Bar
         positionBar = (SeekBar) findViewById(R.id.positionBar);
         positionBar.setMax(totalTime);
-        System.out.println("MAX: " + positionBar.getMax());
         positionBar.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener() {
                     @Override
@@ -514,44 +518,56 @@ public class Wav extends AppCompatActivity {
 
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {
-                        if (musicSrv.isPng())
+                        if (musicSrv.isPng()) {
                             wasPlaying = true;
-                        else
+                        } else {
                             wasPlaying = false;
-                        canChange = false;
-                        musicSrv.pausePlayer();
+                            canChange = false;
+
+                            musicSrv.pausePlayer();
+
+
+                        }
                     }
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         canChange = true;
-                        if (wasPlaying)
+                        if (wasPlaying) {
                             musicSrv.go();
+                        }
                     }
                 }
         );
 
         // Volume Bar
         volumeBar = (SeekBar) findViewById(R.id.volumeBar);
+
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
         volumeBar.setMax(audioManager
                 .getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+
         volumeBar.setProgress(audioManager
                 .getStreamVolume(AudioManager.STREAM_MUSIC));
+
         volumeBar.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar arg0, int progress, boolean arg2) {
                         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
                                 progress, 0);
+
                     }
 
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {
+
                     }
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
+
 
                     }
                 }
@@ -565,19 +581,32 @@ public class Wav extends AppCompatActivity {
                 while (musicSrv != null) {
                     try {
                         Message msg = new Message();
+
+
                         msg.what = musicSrv.getPosn();
+
+
                         handler.sendMessage(msg);
+                        Message mst = new Message();
+
                         Thread.sleep(1000);
+
                     } catch (InterruptedException e) {
                     }
                 }
             }
         }).start();
 
+
         queueView = (ListView) findViewById(R.id.list);
+
+
         queue = musicSrv.getQueue();
         queueAdt = new SongAdapter(this, queue, "song");
+
         queueView.setAdapter(queueAdt);
+
+
     }
 
 
@@ -594,14 +623,15 @@ public class Wav extends AppCompatActivity {
 
             String remainingTime = createTimeLabel(totalTime - currentPosition);
             remainingTimeLabel.setText("- " + remainingTime);
-
-            if (totalTime - currentPosition <= 0 && canChange == true) {
-                musicSrv.playNext();
-                updateInfo();
-            }
+//
+//            if (totalTime - currentPosition <= 0 && canChange == true) {
+//                musicSrv.playNext();
+//                updateInfo2();
+//            }
 
         }
     };
+
 
     public String createTimeLabel(int time) {
         String timeLabel = "";
@@ -630,7 +660,7 @@ public class Wav extends AppCompatActivity {
         musicSrv.setSong(Integer.parseInt(s));
         musicSrv.playSong();
         playBtn.setBackgroundResource(R.drawable.pause);
-        System.out.println("DURATION: " + musicSrv.getDur());
+
     }
 
     @Override
@@ -660,8 +690,14 @@ public class Wav extends AppCompatActivity {
     }
 
     public void nextBtnClick(View view) {
+
+
         musicSrv.playNext();
+
+
         updateInfo();
+
+
     }
 
     public void prevBtnClick(View view) {
@@ -670,7 +706,15 @@ public class Wav extends AppCompatActivity {
     }
 
     public void shuffleBtnClick(View view) {
-        Collections.shuffle(queue);
+
+        Button btn = findViewById(R.id.shuffleBtn);
+
+        musicSrv.setShuffle();
+        if (musicSrv.getShufle() == true) {
+            btn.setBackgroundResource(R.drawable.shuffle);
+        } else {
+            btn.setBackgroundResource(R.drawable.shuffle);
+        }
         queueAdt.notifyDataSetChanged();
     }
 

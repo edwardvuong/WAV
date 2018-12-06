@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -11,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import android.view.View;
-import 	android.view.ViewGroup;
+import android.view.ViewGroup;
 
 
 public class SongAdapter extends BaseAdapter {
@@ -36,18 +37,18 @@ public class SongAdapter extends BaseAdapter {
 //        section = "song";
 //    }
 
-    public SongAdapter(Context c, ArrayList<Song> theSongs, String newSection){
-        songs=theSongs;
+    public SongAdapter(Context c, ArrayList<Song> theSongs, String newSection) {
+        songs = theSongs;
 
         searchList = songs;
 
         search = false;
 
-        songInf=LayoutInflater.from(c);
+        songInf = LayoutInflater.from(c);
         section = newSection;
 
 
-        for( Song s : songs){
+        for (Song s : songs) {
             if (!albumList.contains(s.getAlbum())) {
                 albumList.add(s.getAlbum());
                 albumList.add(s.getAlbumArtID());
@@ -64,25 +65,23 @@ public class SongAdapter extends BaseAdapter {
     public int getCount() {
         if (section == "song") {
 
-            if(search == true) {
+            if (search == true) {
 
 
                 return searchList.size();
-            }
-            else{
+            } else {
                 return songs.size();
             }
 
-        }
-        else if (section =="album"){
-            return albumList.size()/2;
-        }
-        else{
+        } else if (section == "album") {
+            return albumList.size() / 2;
+        } else {
             return artistList.size();
         }
 
 
     }
+
     @Override
     public Object getItem(int arg0) {
         // TODO Auto-generated method stub
@@ -95,7 +94,7 @@ public class SongAdapter extends BaseAdapter {
         return 0;
     }
 
-    public void setSection(String newSection){
+    public void setSection(String newSection) {
 
         section = newSection;
 
@@ -111,6 +110,8 @@ public class SongAdapter extends BaseAdapter {
             //map to song layout
             LinearLayout songLay = (LinearLayout) songInf.inflate
                     (R.layout.song, parent, false);
+
+
             //get title and artist views
             TextView songView = (TextView) songLay.findViewById(R.id.song_title);
             TextView artistView = (TextView) songLay.findViewById(R.id.song_artist);
@@ -120,8 +121,7 @@ public class SongAdapter extends BaseAdapter {
 
             if (search == true) {
                 currSong = searchList.get(position);
-            }
-            else{
+            } else {
                 currSong = songs.get(position);
             }
 
@@ -132,9 +132,6 @@ public class SongAdapter extends BaseAdapter {
             songLay.setTag(position);
             return songLay;
         } else if (section == "album") {
-
-
-            System.out.println("ALBUMPOS: " + position);
 
 
             LinearLayout songLay = (LinearLayout) songInf.inflate
@@ -160,8 +157,6 @@ public class SongAdapter extends BaseAdapter {
 
         } else {
 
-            System.out.println("ARTISTPOS: " + position);
-
 
             LinearLayout songLay = (LinearLayout) songInf.inflate
                     (R.layout.artist, parent, false);
@@ -172,17 +167,17 @@ public class SongAdapter extends BaseAdapter {
             String currSong = artistList.get(position);
             //get title and artist strings
             songArtist.setText(currSong);
-            int count =0;
-            for (Song sng : songs){
-                if (sng.getArtist().equals(currSong)){
+            int count = 0;
+            for (Song sng : songs) {
+                if (sng.getArtist().equals(currSong)) {
                     count++;
                 }
 
             }
 
-            if (count !=1) {
+            if (count != 1) {
                 trackNums.setText(count + " Tracks");
-            } else{
+            } else {
                 trackNums.setText(count + " Track");
             }
 
@@ -195,57 +190,51 @@ public class SongAdapter extends BaseAdapter {
     }
 
 
+    public void search(String searchVal) {
 
-    public void search(String searchVal){
+        searchList = songs;
 
-       searchList=songs;
+        search = true;
 
-       search = true;
+        ArrayList<Song> searchListTemp = new ArrayList<Song>();
 
-       ArrayList<Song> searchListTemp = new ArrayList<Song>();
-        System.out.println("SV: "+searchVal);
-       if (section == "album") {
+        if (section == "album") {
 
-           for (Song sng : searchList) {
+            for (Song sng : searchList) {
 
-               if(sng.getAlbum().equals(searchVal)){
-                   searchListTemp.add(sng);
-               }
+                if (sng.getAlbum().equals(searchVal)) {
+                    searchListTemp.add(sng);
+                }
 
-           }
+            }
 
-       }
+        } else if (section == "artist") {
 
-       else if(section == "artist"){
+            for (Song sng : searchList) {
 
-           for (Song sng : searchList) {
+                if (sng.getArtist().equals(searchVal)) {
+                    searchListTemp.add(sng);
+                }
 
-               if(sng.getArtist().equals(searchVal)){
-                   searchListTemp.add(sng);
-               }
-
-           }
+            }
 
 
-       }
-       else{
+        } else {
 
 
+            for (Song sng : searchList) {
 
-           for (Song sng : searchList) {
+                if (sng.getArtist().toLowerCase().contains(searchVal.toLowerCase()) || sng.getAlbum().toLowerCase().contains(searchVal.toLowerCase()) || sng.getTitle().toLowerCase().contains(searchVal.toLowerCase())) {
+                    searchListTemp.add(sng);
+                }
 
-               if(sng.getArtist().toLowerCase().contains(searchVal.toLowerCase()) || sng.getAlbum().toLowerCase().contains(searchVal.toLowerCase()) || sng.getTitle().toLowerCase().contains(searchVal.toLowerCase())){
-                   searchListTemp.add(sng);
-               }
-
-           }
-
+            }
 
 
-       }
+        }
 
 
-       searchList = searchListTemp;
+        searchList = searchListTemp;
 
 
     }
@@ -253,16 +242,15 @@ public class SongAdapter extends BaseAdapter {
 
     public ArrayList<Song> retList() {
 
-    if (search == true){
-        return  searchList;
-    }
-    else{
-        return  songs;
-    }
+        if (search == true) {
+            return searchList;
+        } else {
+            return songs;
+        }
 
     }
 
-    public void clearSearch (){
+    public void clearSearch() {
 
         search = false;
 

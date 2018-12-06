@@ -2,8 +2,9 @@ package wav.wav;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
-public class Song implements Parcelable {
+public class Song implements Parcelable, Comparable {
 
     private long id;
     private String title;
@@ -85,19 +86,26 @@ public class Song implements Parcelable {
         dest.writeString(albumArtID);
     }
 
-    public String toString(){
+    public String toString() {
         return title;
     }
 
 
-    public Song searchID(String nid){
+    public Song searchID(String nid) {
 
-        if(nid==String.valueOf(id)){
+        if (nid == String.valueOf(id)) {
             return this;
-        }
-        else return null;
+        } else return null;
 
     }
 
 
+    @Override
+    public int compareTo(@NonNull Object o) {
+
+        Song s = (Song) o;
+
+
+        return this.getTitle().compareTo((s.getTitle()));
+    }
 }

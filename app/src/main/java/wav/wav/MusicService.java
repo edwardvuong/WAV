@@ -3,6 +3,7 @@ package wav.wav;
 import android.app.Service;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.ContentUris;
@@ -15,6 +16,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -34,6 +36,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     //current position
     private int songPosn;
 
+
     //music queue
     //private Queue<Song> queue = new LinkedList<Song>();
 
@@ -44,6 +47,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     private boolean shuffle = false;
     private Random rand;
+
+    private boolean prepared = false;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -68,6 +73,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         player = new MediaPlayer();
         initMusicPlayer();
         rand = new Random();
+
+
     }
 
     public void initMusicPlayer() {
@@ -107,6 +114,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
         player.reset();
 
+
         //get song
         Song playSong = songs.get(songPosn);
 
@@ -116,6 +124,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         //get id
         long currSong = playSong.getID();
         //set uri
+
         Uri trackUri = ContentUris.withAppendedId(
                 android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 currSong);
@@ -123,8 +132,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
         try {
             player.setDataSource(getApplicationContext(), trackUri);
+
         } catch (Exception e) {
             Log.e("MUSIC SERVICE", "Error setting data source", e);
+
         }
 
         player.prepareAsync();
@@ -135,14 +146,11 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     @Override
     public void onPrepared(MediaPlayer mp) {
+        player.start();
+        prepared = true;
+
         //start playback
-        mp.start();
 
-
-        Intent notIntent = new Intent(this, Wav.class);
-        notIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendInt = PendingIntent.getActivity(this, 0,
-                notIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 //        Notification.Builder builder = new Notification.Builder(this);
 
@@ -170,7 +178,6 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
     public int getDur() {
-
 
         return songs.get(songPosn).getDuration();
     }
@@ -210,29 +217,43 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     public void playPrev() {
         songPosn--;
-        if (songPosn < 0) songPosn = songs.size() - 1;
+        if (songPosn >= songs.size()) {
+            songPosn = 0;
+        }
+        if (songPosn < 0) {
+            songPosn = songs.size() - 1;
+        }
+
         playSong();
     }
 
     //skip to next
     public void playNext() {
-        if (shuffle) {
-            int newSong = songPosn;
-            while (newSong == songPosn) {
-                newSong = rand.nextInt(songs.size());
-            }
-            songPosn = newSong;
-        } else {
-            songPosn++;
-            if (songPosn >= songs.size()) songPosn = 0;
+
+        songPosn++;
+        if (songPosn >= songs.size()) {
+            songPosn = 0;
         }
+        if (songPosn < 0) {
+            songPosn = songs.size() - 1;
+        }
+
         playSong();
+
     }
 
-    public ArrayList<Song> getQueue(){
-        ArrayList<Song> queue = new ArrayList();
-        for(int i = songPosn+1; i < songs.size(); i++)
+    public ArrayList<Song> getQueue() {
+
+        ArrayList<Song> queue = new ArrayList<Song>();
+
+        for (int i = songPosn + 1; i < songs.size(); i++) {
+
             queue.add(songs.get(i));
+
+
+        }
+
+
         return queue;
     }
 
@@ -244,21 +265,74 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
 
     public void setShuffle() {
-        if (shuffle) shuffle = false;
-        else shuffle = true;
+
+
+        if (shuffle == false) {
+            Collections.shuffle(songs);
+            shuffle = true;
+        } else {
+
+
+            shuffle = false;
+            Song temp = songs.get(songPosn);
+            int count = 0;
+            Collections.sort(songs);
+            songPosn = 1;
+
+            for (Song sng : songs) {
+                if (sng.getID() == temp.getID()) {
+                    songPosn = count;
+                }
+                count++;
+            }
+
+        }
+
+
     }
 
 
-    public void setLoop(){
+    public void setLoop() {
 
         if (player.isLooping() == true) {
             player.setLooping(false);
-            System.out.println("NOTLOOP");
-        }
-        else{
+
+        } else {
             player.setLooping(true);
-            System.out.println("LOOPLOOP");
+
         }
 
     }
+
+    public void clearPrep() {
+        prepared = false;
+    }
+
+    public boolean getPrep() {
+
+        return prepared;
+    }
+
+    public void prepare2() {
+        try {
+            player.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public MediaPlayer getPlayer() {
+
+        return player;
+    }
+
+    public void releaser() {
+        player.release();
+    }
+
+
+    public boolean getShufle() {
+        return shuffle;
+    }
+
 }
