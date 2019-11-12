@@ -9,6 +9,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import android.view.View;
@@ -108,7 +109,7 @@ public class SongAdapter extends BaseAdapter {
 
 
             //map to song layout
-            LinearLayout songLay = (LinearLayout) songInf.inflate
+            RelativeLayout songLay = (RelativeLayout) songInf.inflate
                     (R.layout.song, parent, false);
 
 
@@ -134,7 +135,7 @@ public class SongAdapter extends BaseAdapter {
         } else if (section == "album") {
 
 
-            LinearLayout songLay = (LinearLayout) songInf.inflate
+            RelativeLayout songLay = (RelativeLayout) songInf.inflate
                     (R.layout.album, parent, false);
             //get title and artist views
 
@@ -158,7 +159,7 @@ public class SongAdapter extends BaseAdapter {
         } else {
 
 
-            LinearLayout songLay = (LinearLayout) songInf.inflate
+            RelativeLayout songLay = (RelativeLayout) songInf.inflate
                     (R.layout.artist, parent, false);
             //get title and artist views
             TextView songArtist = (TextView) songLay.findViewById(R.id.song_artist);

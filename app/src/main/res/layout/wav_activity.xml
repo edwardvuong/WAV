@@ -39,6 +39,7 @@
                 android:layout_marginTop="192dp"
                 android:background="@color/white"
                 android:clickable="true"
+                android:fadingEdge="horizontal"
                 android:onClick="inputSearch"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/song_list"
@@ -64,11 +65,11 @@
                 android:id="@+id/tabv_tab2"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
-                app:tabv_colorMain="#4577B7"
+                app:tabv_colorMain="@android:color/holo_red_dark"
                 app:tabv_colorSub="#ffffff"
                 app:tabv_duration="250"
                 app:tabv_padding="2px"
-                app:tabv_textSize="11dp"
+                app:tabv_textSize="16dp"
                 app:tabv_title="SONGS;ALBUMS;ARTISTS;PLAYLISTS"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="137dp" />
@@ -78,8 +79,12 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:backgroundTint="@android:color/darker_gray"
+                android:backgroundTintMode="multiply"
                 app:layout_constraintTop_toBottomOf="@+id/searchBar"
                 tools:layout_editor_absoluteX="0dp"></ListView>
+
+
 
         </android.support.constraint.ConstraintLayout>
 
@@ -92,14 +97,18 @@
         android:id="@+id/dragView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff"
+        android:alpha="1"
+        android:background="@drawable/bggray"
         android:clickable="true"
         android:focusable="false"
         android:orientation="vertical">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="85dp"
+            android:alpha=".5"
+            android:background="@color/white"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -107,8 +116,8 @@
                 android:id="@+id/barSong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:text=""
+                android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
@@ -117,10 +126,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:textAlignment="center"
                 android:text=""
-                app:layout_constraintTop_toBottomOf="@+id/barSong"
-                android:textSize="8pt" />
+                android:textAlignment="center"
+                android:textSize="8pt"
+                app:layout_constraintTop_toBottomOf="@+id/barSong" />
 
         </LinearLayout>
 
@@ -163,15 +172,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView3" />
         </TableRow>
 
+
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
+            android:background="@android:drawable/dialog_holo_light_frame"
             android:src="@drawable/image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -182,9 +193,10 @@
             android:id="@+id/positionBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            tools:layout_editor_absoluteX="68dp"
-            tools:layout_editor_absoluteY="318dp" />
+            android:layout_gravity="center"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -232,7 +244,6 @@
                 android:layout_height="86dp"
                 android:background="@drawable/play"
                 android:onClick="playBtnClick"
-                tools:layout_editor_absoluteX="149dp"
                 tools:layout_editor_absoluteY="349dp" />
 
             <Button
@@ -304,7 +315,9 @@
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"></ListView>
+            android:layout_weight="1"
+            android:alpha=".8"
+            android:background="@android:color/white"></ListView>
 
         <!--<ScrollView-->
         <!--android:id="@+id/sv"-->

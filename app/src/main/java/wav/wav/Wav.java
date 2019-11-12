@@ -108,6 +108,8 @@ public class Wav extends AppCompatActivity {
     Button shuffleBtn;
 
 
+    int tempglobcount = 6;
+
     ArrayList<Song> queue;
     private AudioManager audioManager;
     private boolean canChange = true;
@@ -742,5 +744,38 @@ public class Wav extends AppCompatActivity {
 
 
     }
+/**
+    public void cycleFakes(View view) {
+        ImageView fake = findViewById(R.id.imageViewgrad);
+        String img = "back"+tempglobcount;
+        int id = getResources().getIdentifier("wav.wav:drawable/" + img, null, null);
+        tempglobcount++;
 
+        fake.setImageResource(id);
+
+
+        TextView a = (TextView) findViewById(R.id.barSong);
+
+
+
+        TextView t = (TextView) findViewById(R.id.barArtist);
+
+
+        if (tempglobcount == 10) {
+            a.setText("Curse-rotted Greatwood");
+
+        }
+
+        if (tempglobcount == 12) {
+            a.setText("Iudex Gundyr");
+
+        }
+
+        if (tempglobcount == 20) {
+            a.setText("Curse-rotted Greatwood");
+
+        }
+
+    }
+**/
 }
